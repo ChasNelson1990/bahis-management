@@ -44,64 +44,76 @@
     {% endblock javascript %}
   </head>
   <body>
-    <div class="mb-1">
-      <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <div class="container-fluid">
-          <button
-            class="navbar-toggler navbar-toggler-right"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <a class="navbar-brand" href="{% url 'home' %}">BAHIS Management</a>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="{% url 'home' %}"
-                  >Home <span class="visually-hidden">(current)</span></a
-                >
-              </li>
-              {% if user %}
-              <li class="nav-item">
-                <span>Hi, {{ user }}!</span>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/logout/">Log out</a>
-              </li>
-              {% else %}
-              <li class="nav-item">
-                <a class="nav-link" href="/login/">Log in</a>
-              </li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </div>
-    <div class="container">
-      {% if messages %} {% for message in messages %}
-      <div
-        class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}"
-      >
+    <header>
+        <nav class="white">
+            <div class="nav-wrapper container">
+                <a href="{% url 'home' %}" class="brand-logo">
+                    <div class="valign-wrapper">
+                        <img src="{% static 'images/logo.png' %}" alt="logo" />
+                        <span>BAHIS3 Management Portal</span>
+                    </div>
+                </a>
+                <ul id="nav-mobile" class="right">
+                    <li>
+                        <a href="{% url 'home' %}">
+                            <i class="material-icons left">home</i>
+                            Home
+                        </a>
+                    </li>
+                    {% if user %}
+                    <li>
+                        <a href="/logout/">
+                            <i class="material-icons left">logout</i>
+                            Log out
+                        </a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="/login/">
+                            <i class="material-icons left">login</i>
+                            Log in
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        {% if messages %} {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
         {{ message }}
         <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="alert"
-          aria-label="Close"
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
         ></button>
-      </div>
-      {% endfor %} {% endif %}
-      {% block content %}
+        </div>
+        {% endfor %} {% endif %}
+        
+        {% block content %}
+        <h1>BAHIS Management</h1>
+
         <p>Use this document as a way to quick start any new project.</p>
-      {% endblock content %}
-    </div>
-    <!-- /container -->
+        {% endblock content %}
+    </main>
+
+    <footer class="page-footer footer-fixed white black-text">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6 footer-copyright white black-text ">
+                    <p>Developed by FAO Bangladesh ECTAD 2023.</p>
+                </div>
+                <div class="col s12 m6 right-align valign-wrapper funders">
+                    With thanks to our funders&nbsp;
+                    <img src="{% static 'images/funders.png' %}" alt="funder logos" />
+                </div>
+            </div>
+        </div>
+    </footer>
+
     {% block modal %}
     {% endblock modal %}
     {% block inline_javascript %}

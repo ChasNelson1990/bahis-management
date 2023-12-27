@@ -1,0 +1,18 @@
+.nav-wrapper .brand-logo img {
+    height: 64px;
+}
+
+nav.white ul:not(.dropdown-content)>li>a,
+nav.white .brand-logo {
+  color: var(--font-color-main);
+}
+
+.page-footer.footer-fixed {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.page-footer .funders img {
+    height: 64px;
+}
