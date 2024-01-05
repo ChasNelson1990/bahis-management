@@ -34,6 +34,8 @@ urlpatterns += [
         SpectacularSwaggerView.as_view(url_name="api-schema"),
         name="api-docs",
     ),
+    # Desk Modules urls
+    path("desk_modules/", include("bahis_management.desk_modules.urls")),
 ]
 
 if settings.DEBUG:

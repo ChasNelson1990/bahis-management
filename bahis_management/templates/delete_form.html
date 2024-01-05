@@ -1,0 +1,18 @@
+{%extends 'base.html'%}
+
+{% block content %}
+
+{% block content_title %}
+<h1> Template Delete View</h1>
+{% endblock content_title %}
+
+<form method="post">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ object }}"?</p>
+    {{ form }}
+    <div class="col s12 right-align">
+        <input class="btn" type="submit" value="Confirm delete">
+        <a class="btn" href="{% url 'desk_modules:list'%}">Cancel</a>
+    </div>
+</form>
+
+{% endblock content %}
