@@ -2,9 +2,9 @@
     height: 64px;
 }
 
-nav.white ul:not(.dropdown-content)>li>a,
+nav.white ul>li>a,
 nav.white .brand-logo {
-  color: var(--font-color-main);
+  color: #000000;
 }
 
 .page-footer.footer-fixed {
@@ -15,4 +15,47 @@ nav.white .brand-logo {
 
 .page-footer .funders img {
     height: 64px;
+}
+
+table > tbody > tr > td > label > input[type="checkbox"] + span:not(.lever) {
+    cursor: default;
+}
+
+.alert {
+    position: relative;
+    padding: 1rem 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+.alert-debug {
+    color: #41464b;
+    background-color: #e2e3e5;
+    border-color: #d3d6d8;
+}
+
+.alert-info {
+    color: #084298;
+    background-color: #cfe2ff;
+    border-color: #b6d4fe;
+}
+
+.alert-success {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+}
+
+.alert-warning {
+    color: #664d03;
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+}
+
+.alert-error {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
 }

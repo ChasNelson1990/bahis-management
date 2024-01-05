@@ -2,8 +2,8 @@
 Base settings to build other settings files upon.
 """
 from pathlib import Path
-
 import environ
+from django.templatetags.static import static
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # bahis_management/
@@ -82,6 +82,8 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "drf_spectacular",
+    'django_filters',
+    'materializecssform',
 ]
 
 LOCAL_APPS = [
@@ -246,11 +248,11 @@ LOGGING = {
 # -------------------------------------------------------------------------------
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.TokenAuthentication",
-    ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_AUTHENTICATION_CLASSES": [],  # (
+    #     "rest_framework.authentication.SessionAuthentication",
+    #     "rest_framework.authentication.TokenAuthentication",
+    # ), FIXME auth is turned off
+    "DEFAULT_PERMISSION_CLASSES": [],  # ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
@@ -262,8 +264,7 @@ CORS_URLS_REGEX = r"^/api/.*$"
 SPECTACULAR_SETTINGS = {
     "TITLE": "BAHIS Management API",
     "DESCRIPTION": "Documentation of API endpoints of BAHIS Management",
-    "VERSION": "1.0.0",
-    "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
+    "VERSION": "3.0.0",
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.AllowAny"],  # ["rest_framework.permissions.IsAdminUser"], FIXME auth is turned off
+    'SWAGGER_UI_FAVICON_HREF': STATIC_URL + 'img/favicon.ico',
 }
-# Your stuff...
-# ------------------------------------------------------------------------------
