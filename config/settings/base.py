@@ -1,6 +1,7 @@
 """
 Base settings to build other settings files upon.
 """
+
 from pathlib import Path
 import environ
 from django.templatetags.static import static
@@ -45,15 +46,17 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {"default": {
-    "ENGINE": "django.db.backends.postgresql",
-    "HOST": env("POSTGRES_HOST"),
-    "PORT": env("POSTGRES_PORT"),
-    "NAME": env("POSTGRES_DB"),
-    "USER": env("POSTGRES_USER"),
-    "PASSWORD": env("POSTGRES_PASSWORD"),
-    "ATOMIC_REQUESTS": True,
-}}
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": env("POSTGRES_HOST"),
+        "PORT": env("POSTGRES_PORT"),
+        "NAME": env("POSTGRES_DB"),
+        "USER": env("POSTGRES_USER"),
+        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "ATOMIC_REQUESTS": True,
+    }
+}
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -82,8 +85,8 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "drf_spectacular",
-    'django_filters',
-    'materializecssform',
+    "django_filters",
+    "materializecssform",
 ]
 
 LOCAL_APPS = [
@@ -102,30 +105,30 @@ MIGRATION_MODULES = {}
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
 # AUTHLIB CLIENTS
 # ------------------------------------------------------------------------------
-if OAUTH2_SERVER_URL:=env('OAUTH2_SERVER_URL'):
+if OAUTH2_SERVER_URL := env("OAUTH2_SERVER_URL"):
     OAUTH2_API_BASE_URL = OAUTH2_SERVER_URL + "/api/"
-    OAUTH2_SERVER_METADATA_URL= OAUTH2_SERVER_URL + "/.well-known/openid-configuration/"
+    OAUTH2_SERVER_METADATA_URL = OAUTH2_SERVER_URL + "/.well-known/openid-configuration/"
 
 AUTHLIB_OAUTH_CLIENTS = {
-    'bahis_oidc': {
-        'client_id': env('OAUTH2_CLIENT_ID'),
-        'client_secret': env.str('OAUTH2_CLIENT_SECRET'),
-        'api_base_url': OAUTH2_API_BASE_URL,
+    "bahis_oidc": {
+        "client_id": env("OAUTH2_CLIENT_ID"),
+        "client_secret": env.str("OAUTH2_CLIENT_SECRET"),
+        "api_base_url": OAUTH2_API_BASE_URL,
     }
 }
 
@@ -265,6 +268,8 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "BAHIS Management API",
     "DESCRIPTION": "Documentation of API endpoints of BAHIS Management",
     "VERSION": "3.0.0",
-    "SERVE_PERMISSIONS": ["rest_framework.permissions.AllowAny"],  # ["rest_framework.permissions.IsAdminUser"], FIXME auth is turned off
-    'SWAGGER_UI_FAVICON_HREF': STATIC_URL + 'img/favicon.ico',
+    "SERVE_PERMISSIONS": [
+        "rest_framework.permissions.AllowAny"
+    ],  # ["rest_framework.permissions.IsAdminUser"], FIXME auth is turned off
+    "SWAGGER_UI_FAVICON_HREF": STATIC_URL + "img/favicon.ico",
 }
