@@ -1,8 +1,8 @@
 from bahis_management.desk.models import (
     Module,
-    ModuleListDefinition,
+    ListDefinition,
     ModuleType,
-    ModuleWorkflow,
+    Workflow,
 )
 from rest_framework import serializers
 
@@ -13,9 +13,9 @@ class ModuleTypeSerializer(serializers.ModelSerializer):
         fields = ["id", "title"]
 
 
-class ModuleListDefinitionSerializer(serializers.ModelSerializer):
+class ListDefinitionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ModuleListDefinition
+        model = ListDefinition
         fields = [
             "id",
             "title",
@@ -43,9 +43,9 @@ class ModuleSerializer(serializers.ModelSerializer):
         ]
 
 
-class ModuleWorkflowSerializer(serializers.ModelSerializer):
+class WorkflowSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ModuleWorkflow
+        model = Workflow
         fields = [
             "id",
             "title",

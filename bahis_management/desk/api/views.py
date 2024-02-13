@@ -1,14 +1,14 @@
 from bahis_management.desk.api.serializers import (
-    ModuleListDefinitionSerializer,
+    ListDefinitionSerializer,
     ModuleSerializer,
     ModuleTypeSerializer,
-    ModuleWorkflowSerializer,
+    WorkflowSerializer,
 )
 from bahis_management.desk.models import (
     Module,
-    ModuleListDefinition,
+    ListDefinition,
     ModuleType,
-    ModuleWorkflow,
+    Workflow,
 )
 from rest_framework import permissions, viewsets
 
@@ -25,13 +25,13 @@ class ModuleTypeViewSet(viewsets.ModelViewSet):
     ]  # [permissions.IsAuthenticated] FIXME auth is turned off
 
 
-class ModuleListDefinitionViewSet(viewsets.ModelViewSet):
+class ListDefinitionViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows ModuleListDefinitions to be viewed or edited.
+    API endpoint that allows ListDefinitions to be viewed or edited.
     """
 
-    queryset = ModuleListDefinition.objects.all().order_by("id")
-    serializer_class = ModuleListDefinitionSerializer
+    queryset = ListDefinition.objects.all().order_by("id")
+    serializer_class = ListDefinitionSerializer
     permission_classes = [
         permissions.AllowAny
     ]  # [permissions.IsAuthenticated] FIXME auth is turned off
@@ -49,13 +49,13 @@ class ModuleViewSet(viewsets.ModelViewSet):
     ]  # [permissions.IsAuthenticated] FIXME auth is turned off
 
 
-class ModuleWorkflowViewSet(viewsets.ModelViewSet):
+class WorkflowViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows ModuleWorkflows to be viewed or edited.
+    API endpoint that allows Workflows to be viewed or edited.
     """
 
-    queryset = ModuleWorkflow.objects.all().order_by("id")
-    serializer_class = ModuleWorkflowSerializer
+    queryset = Workflow.objects.all().order_by("id")
+    serializer_class = WorkflowSerializer
     permission_classes = [
         permissions.AllowAny
     ]  # [permissions.IsAuthenticated] FIXME auth is turned off

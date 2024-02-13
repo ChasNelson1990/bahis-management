@@ -1,7 +1,7 @@
 from bahis_management.desk.models import (
     Module,
-    ModuleListDefinition,
-    ModuleWorkflow,
+    ListDefinition,
+    Workflow,
 )
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -16,9 +16,9 @@ desk_module_list_definition_entry_fields = [
 ]
 
 
-class ModuleListDefinitionList(FilterView):
+class ListDefinitionList(FilterView):
     template_name_suffix = "_list"
-    model = ModuleListDefinition
+    model = ListDefinition
     paginate_by = 5
     ordering = ["id"]
     filterset_fields = {
@@ -43,9 +43,9 @@ class ModuleListDefinitionList(FilterView):
         return context
 
 
-class ModuleListDefinitionCreate(CreateView):
+class ListDefinitionCreate(CreateView):
     template_name_suffix = "_create_form"
-    model = ModuleListDefinition
+    model = ListDefinition
     fields = desk_module_list_definition_entry_fields
     success_url = reverse_lazy("desk:list")
 
@@ -53,19 +53,19 @@ class ModuleListDefinitionCreate(CreateView):
         messages.success(
             self.request, "The module list definition was created successfully."
         )
-        return super(ModuleListDefinitionCreate, self).form_valid(form)
+        return super(ListDefinitionCreate, self).form_valid(form)
 
     def form_invalid(self, form):
         messages.error(
             self.request, "The module list definition was not created successfully."
         )
         form.error_css_class = "error"
-        return super(ModuleListDefinitionCreate, self).form_invalid(form)
+        return super(ListDefinitionCreate, self).form_invalid(form)
 
 
-class ModuleListDefinitionUpdate(UpdateView):
+class ListDefinitionUpdate(UpdateView):
     template_name_suffix = "_update_form"
-    model = ModuleListDefinition
+    model = ListDefinition
     fields = desk_module_list_definition_entry_fields
     success_url = reverse_lazy("desk:list")
 
@@ -73,19 +73,19 @@ class ModuleListDefinitionUpdate(UpdateView):
         messages.success(
             self.request, "The module list definition was updated successfully."
         )
-        return super(ModuleListDefinitionUpdate, self).form_valid(form)
+        return super(ListDefinitionUpdate, self).form_valid(form)
 
 
-class ModuleListDefinitionDelete(DeleteView):
+class ListDefinitionDelete(DeleteView):
     template_name_suffix = "_delete_form"
-    model = ModuleListDefinition
+    model = ListDefinition
     success_url = reverse_lazy("desk:list")
 
     def form_valid(self, form):
         messages.success(
             self.request, "The module list definition was deleted successfully."
         )
-        return super(ModuleListDefinitionDelete, self).form_valid(form)
+        return super(ListDefinitionDelete, self).form_valid(form)
 
 
 desk_module_entry_fields = [
@@ -175,9 +175,9 @@ desk_module_workflow_entry_fields = [
 ]
 
 
-class ModuleWorkflowList(FilterView):
+class WorkflowList(FilterView):
     template_name_suffix = "_list"
-    model = ModuleWorkflow
+    model = Workflow
     paginate_by = 5
     ordering = ["id"]
     filterset_fields = {
@@ -202,40 +202,40 @@ class ModuleWorkflowList(FilterView):
         return context
 
 
-class ModuleWorkflowCreate(CreateView):
+class WorkflowCreate(CreateView):
     template_name_suffix = "_create_form"
-    model = ModuleWorkflow
+    model = Workflow
     fields = desk_module_workflow_entry_fields
     success_url = reverse_lazy("desk:list")
 
     def form_valid(self, form):
         messages.success(self.request, "The module workflow was created successfully.")
-        return super(ModuleWorkflowCreate, self).form_valid(form)
+        return super(WorkflowCreate, self).form_valid(form)
 
     def form_invalid(self, form):
         messages.error(
             self.request, "The module workflow was not created successfully."
         )
         form.error_css_class = "error"
-        return super(ModuleWorkflowCreate, self).form_invalid(form)
+        return super(WorkflowCreate, self).form_invalid(form)
 
 
-class ModuleWorkflowUpdate(UpdateView):
+class WorkflowUpdate(UpdateView):
     template_name_suffix = "_update_form"
-    model = ModuleWorkflow
+    model = Workflow
     fields = desk_module_workflow_entry_fields
     success_url = reverse_lazy("desk:list")
 
     def form_valid(self, form):
         messages.success(self.request, "The module workflow was updated successfully.")
-        return super(ModuleWorkflowUpdate, self).form_valid(form)
+        return super(WorkflowUpdate, self).form_valid(form)
 
 
-class ModuleWorkflowDelete(DeleteView):
+class WorkflowDelete(DeleteView):
     template_name_suffix = "_delete_form"
-    model = ModuleWorkflow
+    model = Workflow
     success_url = reverse_lazy("desk:list")
 
     def form_valid(self, form):
         messages.success(self.request, "The module workflow was deleted successfully.")
-        return super(ModuleWorkflowDelete, self).form_valid(form)
+        return super(WorkflowDelete, self).form_valid(form)

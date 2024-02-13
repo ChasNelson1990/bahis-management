@@ -20,7 +20,7 @@ class ModuleType(models.Model):
         return self.title
 
 
-class ModuleListDefinition(models.Model):
+class ListDefinition(models.Model):
     """
     This model is used to define the list definitions that will be rendered in the BAHIS-desk app.
     """
@@ -66,7 +66,7 @@ class Module(models.Model):
         help_text="A description of the module, this will be rendered in the BAHIS-desk app",
     )
     list_definition_id = models.ForeignKey(
-        "ModuleListDefinition",
+        "ListDefinition",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -135,7 +135,7 @@ class Module(models.Model):
         ]
 
 
-class ModuleWorkflow(models.Model):
+class Workflow(models.Model):
     """
     This model is used to define the workflows for a module,
     such as follow up and closure forms, which will be rendered in the BAHIS-desk app.
@@ -146,7 +146,7 @@ class ModuleWorkflow(models.Model):
         help_text="The title of the workflow, this will be rendered as a button in the BAHIS-desk app",
     )
     list_id = models.ForeignKey(
-        "ModuleListDefinition",
+        "ListDefinition",
         on_delete=models.CASCADE,
         help_text="The list module definition that this workflow applies to",
     )

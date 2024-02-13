@@ -1,8 +1,8 @@
 from bahis_management.desk.api.views import (
-    ModuleListDefinitionViewSet,
+    ListDefinitionViewSet,
     ModuleTypeViewSet,
     ModuleViewSet,
-    ModuleWorkflowViewSet,
+    WorkflowViewSet,
 )
 from django.conf import settings
 from rest_framework.routers import DefaultRouter, SimpleRouter
@@ -14,8 +14,8 @@ else:
 
 router.register("desk/modules", ModuleViewSet)
 router.register("desk/module-types", ModuleTypeViewSet)
-router.register("desk/list-definitions", ModuleListDefinitionViewSet)
-router.register("desk/workflows", ModuleWorkflowViewSet)
+router.register("desk/list-definitions", ListDefinitionViewSet)
+router.register("desk/workflows", WorkflowViewSet)
 
 app_name = "api"
 urlpatterns = router.urls
