@@ -1,5 +1,6 @@
-from bahis_management.desk_modules.models import DeskModule, DeskModuleType
 from rest_framework import serializers
+
+from bahis_management.desk_modules.models import DeskModule, DeskModuleType
 
 
 class DeskModuleTypeSerializer(serializers.ModelSerializer):

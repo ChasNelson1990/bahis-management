@@ -1,5 +1,6 @@
-from bahis_management.desk_modules import views
 from django.urls import path
+
+from bahis_management.desk_modules import views
 
 app_name = "desk_modules"
 urlpatterns = [

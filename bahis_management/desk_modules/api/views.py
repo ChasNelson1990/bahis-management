@@ -1,9 +1,7 @@
-from bahis_management.desk_modules.api.serializers import (
-    DeskModuleSerializer,
-    DeskModuleTypeSerializer,
-)
-from bahis_management.desk_modules.models import DeskModule, DeskModuleType
 from rest_framework import permissions, viewsets
+
+from bahis_management.desk_modules.api.serializers import DeskModuleSerializer, DeskModuleTypeSerializer
+from bahis_management.desk_modules.models import DeskModule, DeskModuleType
 
 
 class DeskModuleTypeViewSet(viewsets.ModelViewSet):
