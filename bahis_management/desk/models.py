@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class DeskModuleType(models.Model):
+class ModuleType(models.Model):
     """
     This model is used to define the type of module that is being created.
     Each module type will be linked to a definition inside the BAHIS-desk app.
@@ -20,7 +20,7 @@ class DeskModuleType(models.Model):
         return self.title
 
 
-class DeskModuleListDefinition(models.Model):
+class ModuleListDefinition(models.Model):
     """
     This model is used to define the list definitions that will be rendered in the BAHIS-desk app.
     """
@@ -45,7 +45,7 @@ class DeskModuleListDefinition(models.Model):
         return self.title
 
 
-class DeskModule(models.Model):
+class Module(models.Model):
     """
     This model is used to define the modules that will be rendered in the BAHIS-desk app.
     """
@@ -66,7 +66,7 @@ class DeskModule(models.Model):
         help_text="A description of the module, this will be rendered in the BAHIS-desk app",
     )
     list_definition_id = models.ForeignKey(
-        "DeskModuleListDefinition",
+        "ModuleListDefinition",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -83,12 +83,12 @@ class DeskModule(models.Model):
         help_text="The external URL to be used for this module (if type is external URL)",
     )
     module_type = models.ForeignKey(
-        DeskModuleType,
+        ModuleType,
         on_delete=models.CASCADE,
         help_text="The module type as understood by the BAHIS-desk app",
     )
     parent_module_id = models.ForeignKey(
-        "DeskModule",
+        "Module",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -135,7 +135,7 @@ class DeskModule(models.Model):
         ]
 
 
-class DeskModuleWorkflow(models.Model):
+class ModuleWorkflow(models.Model):
     """
     This model is used to define the workflows for a module,
     such as follow up and closure forms, which will be rendered in the BAHIS-desk app.
@@ -146,7 +146,7 @@ class DeskModuleWorkflow(models.Model):
         help_text="The title of the workflow, this will be rendered as a button in the BAHIS-desk app",
     )
     list_id = models.ForeignKey(
-        "DeskModuleListDefinition",
+        "ModuleListDefinition",
         on_delete=models.CASCADE,
         help_text="The list module definition that this workflow applies to",
     )

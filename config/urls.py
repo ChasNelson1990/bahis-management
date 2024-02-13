@@ -35,7 +35,7 @@ urlpatterns += [
         name="api-docs",
     ),
     # Desk Modules urls
-    path("desk_modules/", include("bahis_management.desk_modules.urls")),
+    path("desk/", include("bahis_management.desk.urls")),
 ]
 
 if settings.DEBUG:
