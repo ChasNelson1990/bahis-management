@@ -4,7 +4,6 @@ Base settings to build other settings files upon.
 
 from pathlib import Path
 import environ
-from django.templatetags.static import static
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # bahis_management/

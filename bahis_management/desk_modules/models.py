@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -20,7 +19,7 @@ class DeskModule(models.Model):
     )  # TODO can we just use the form ID or URL for this?
     form_id = models.IntegerField(
         blank=True, null=True
-    )  #  TODO how to import from kobo in bahis 3, as a URL?, also - how to handle offline forms?
+    )  # TODO how to import from kobo in bahis 3, as a URL?, also - how to handle offline forms?
     external_url = models.URLField(
         blank=True, null=True
     )  # TODO if this is also a URL can we simplify all three into one field?
