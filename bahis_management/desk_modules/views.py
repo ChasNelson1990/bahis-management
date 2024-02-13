@@ -1,8 +1,8 @@
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from bahis_management.desk_modules.models import DeskModule
 from django.contrib import messages
 from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django_filters.views import FilterView
-from bahis_management.desk_modules.models import DeskModule
 
 desk_module_entry_fields = [
     "title",

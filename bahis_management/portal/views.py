@@ -1,8 +1,9 @@
 import json
-from django.conf import settings
-from django.urls import reverse
-from django.shortcuts import render, redirect
+
 from authlib.integrations.django_client import OAuth
+from django.conf import settings
+from django.shortcuts import redirect, render
+from django.urls import reverse
 
 oauth = OAuth()
 oauth.register(
