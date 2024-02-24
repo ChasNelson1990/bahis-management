@@ -65,7 +65,7 @@ class Module(models.Model):
         null=True,
         help_text="A description of the module, this will be rendered in the BAHIS-desk app",
     )
-    list_definition_id = models.ForeignKey(
+    list_definition = models.ForeignKey(
         "ListDefinition",
         on_delete=models.SET_NULL,
         blank=True,
@@ -87,7 +87,7 @@ class Module(models.Model):
         on_delete=models.CASCADE,
         help_text="The module type as understood by the BAHIS-desk app",
     )
-    parent_module_id = models.ForeignKey(
+    parent_module = models.ForeignKey(
         "Module",
         on_delete=models.SET_NULL,
         blank=True,
@@ -145,7 +145,7 @@ class Workflow(models.Model):
         max_length=150,
         help_text="The title of the workflow, this will be rendered as a button in the BAHIS-desk app",
     )
-    list_id = models.ForeignKey(
+    list_definition = models.ForeignKey(
         "ListDefinition",
         on_delete=models.CASCADE,
         help_text="The list module definition that this workflow applies to",

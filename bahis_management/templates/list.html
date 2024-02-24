@@ -9,7 +9,7 @@
 {% block content_list %}
 <div class="row">
     <div class="col s12 right-align">
-        <a href="{% url 'desk:create' %}" class="btn-floating btn-large waves-effect waves-light"><i class="material-symbols-outlined">add</i></a>
+        <a href="create" class="btn-floating btn-large waves-effect waves-light"><i class="material-symbols-outlined">add</i></a>
     </div>
 </div>
 
@@ -45,8 +45,8 @@
                 <td>Table data goes here</td>
                 {% endblock table_rows %}
                 <td>
-                    <a href="{% url 'desk:delete' module.id %}"><i class="material-symbols-outlined">delete</i></a>
-                    <a href="{% url 'desk:update' module.id %}"><i class="material-symbols-outlined">edit</i></a>
+                    <a href="delete/{{module.id}}"><i class="material-symbols-outlined">delete</i></a>
+                    <a href="update/{{module.id}}"><i class="material-symbols-outlined">edit</i></a>
                 </td>
             </tr>
         {% endfor %}
@@ -78,6 +78,7 @@
         $(document).ready(function(){
             // Initialize materialize accordians
             $('.collapsible').collapsible();
+            $('select').formSelect();
         });
     </script>
 {% endblock inline_javascript %}

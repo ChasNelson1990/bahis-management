@@ -33,11 +33,11 @@ class ModuleSerializer(serializers.ModelSerializer):
             "title",
             "icon",
             "description",
-            "list_definition_id",
+            "list_definition",
             "form_id",
             "external_url",
             "module_type",
-            "parent_module_id",
+            "parent_module",
             "sort_order",
             "is_active",
         ]
@@ -49,7 +49,7 @@ class WorkflowSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "title",
-            "list_id",
+            "list_definition",
             "form_id",
             "workflow_definition",
             "is_active",

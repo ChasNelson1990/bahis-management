@@ -92,11 +92,11 @@ desk_module_entry_fields = [
     "title",
     "icon",
     "description",
-    "list_definition_id",
+    "list_definition",
     "form_id",
     "external_url",
     "module_type",
-    "parent_module_id",
+    "parent_module",
     "sort_order",
     "is_active",
 ]
@@ -110,6 +110,7 @@ class ModuleList(FilterView):
     filterset_fields = {
         "title": ["icontains"],
         "description": ["icontains"],
+        "parent_module": ["exact"],
     }
 
     def get_context_data(self, **kwargs):
@@ -154,6 +155,13 @@ class ModuleUpdate(UpdateView):
     def form_valid(self, form):
         messages.success(self.request, "The module was updated successfully.")
         return super(ModuleUpdate, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.object.list_definition:
+            context["list_definition"] = self.object.list_definition.id
+
+        return context
 
 
 class ModuleDelete(DeleteView):

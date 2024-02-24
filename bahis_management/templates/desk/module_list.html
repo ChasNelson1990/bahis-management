@@ -13,11 +13,7 @@
     <th>Module</th>
     <th>Type</th>
     <th>Description</th>
-    <th>List</th>
-    <th>Form</th>
-    <th>External URL</th>
     <th>Parent Module</th>
-    <th>Sort Order</th>
     <th>Is Active?</th>
 {% endblock table_headers %}
 
@@ -28,10 +24,6 @@
     </td>
     <td>{{ module.module_type }}</td>
     <td>{{ module.description }}</td>
-    <td>{{ module.list_definition_id|default_if_none:"" }}</td>
-    <td>{{ module.form_id|default_if_none:"" }}</td>
-    <td>{{ module.external_url|default_if_none:"" }}</td>
     <td>{{ module.parent_module_id|default_if_none:"Root" }}</td>
-    <td>{{ module.sort_order }}</td>
     <td><label for="checkbox-for-{{ module.id }}"><input id="checkbox-for-{{ module.id }}" class="filled-in" type="checkbox" {% if module.is_active %} checked {% endif %} disabled/><span></span></label></td>
 {% endblock table_rows %}

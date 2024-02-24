@@ -42,7 +42,7 @@ class ModuleViewSet(viewsets.ModelViewSet):
     API endpoint that allows Modules to be viewed or edited.
     """
 
-    queryset = Module.objects.all().order_by("parent_module_id", "sort_order")
+    queryset = Module.objects.all().order_by("parent_module", "sort_order")
     serializer_class = ModuleSerializer
     permission_classes = [
         permissions.AllowAny

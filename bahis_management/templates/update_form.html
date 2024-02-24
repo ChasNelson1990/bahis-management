@@ -9,9 +9,15 @@
 
 <form method="post">{% csrf_token %}
     {{ form | materializecss}}
-    <div class="col s12 right-align">
-        <input class="btn" type="submit" value="Overwrite existing module">
-        <a class="btn" href="{% url 'desk:list'%}">Cancel</a>
+    <div class="row">
+        <div class="col s6 left-align">
+            {% block extra_options %}
+            {% endblock extra_options %}
+        </div>
+        <div class="col s6 right-align">
+            <input class="btn" type="submit" value="Overwrite existing module">
+            <a class="btn" href="{{request.META.HTTP_REFERER}}">Cancel</a>
+        </div>
     </div>
 </form>
 
