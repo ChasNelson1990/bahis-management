@@ -11,7 +11,7 @@
     {{ form }}
     <div class="col s12 right-align">
         <input class="btn" type="submit" value="Confirm delete">
-        <a class="btn" href="{{request.META.HTTP_REFERER}}">Cancel</a>
+        <a class="btn" href="{% url request.resolver_match.app_name|add:':list' %}">Cancel</a>
     </div>
 </form>
 

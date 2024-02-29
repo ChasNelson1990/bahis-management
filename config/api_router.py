@@ -1,5 +1,4 @@
 from bahis_management.desk.api.views import (
-    ListDefinitionViewSet,
     ModuleTypeViewSet,
     ModuleViewSet,
     WorkflowViewSet,
@@ -14,7 +13,6 @@ else:
 
 router.register("desk/modules", ModuleViewSet)
 router.register("desk/module-types", ModuleTypeViewSet)
-router.register("desk/list-definitions", ListDefinitionViewSet)
 router.register("desk/workflows", WorkflowViewSet)
 
 app_name = "api"

@@ -9,10 +9,11 @@
 {% block content_list %}
 <div class="row">
     <div class="col s12 right-align">
-        <a href="create" class="btn-floating btn-large waves-effect waves-light"><i class="material-symbols-outlined">add</i></a>
+        <a href="{% url request.resolver_match.app_name|add:':create' %}" class="btn-floating btn-large waves-effect waves-light"><i class="material-symbols-outlined">add</i></a>
     </div>
 </div>
 
+{% block filter %}
 <ul class="collapsible">
     <li>
         <div class="collapsible-header">
@@ -26,6 +27,7 @@
         </div>
     </li>
 </ul>
+{% endblock filter %}
 
 {% if object_list %}
 <table class="striped centered responsive-table">
@@ -45,8 +47,8 @@
                 <td>Table data goes here</td>
                 {% endblock table_rows %}
                 <td>
-                    <a href="delete/{{module.id}}"><i class="material-symbols-outlined">delete</i></a>
-                    <a href="update/{{module.id}}"><i class="material-symbols-outlined">edit</i></a>
+                    <a href="{% url request.resolver_match.app_name|add:':delete' module.id %}"><i class="material-symbols-outlined">delete</i></a>
+                    <a href="{% url request.resolver_match.app_name|add:':update' module.id %}"><i class="material-symbols-outlined">edit</i></a>
                 </td>
             </tr>
         {% endfor %}
@@ -70,6 +72,12 @@
     <p>No data found.</p>
 {% endif %}
 {% endblock content_list %}
+
+{% block extra_options %}
+<div class="col s6 right-align">
+    <a class="btn" href="{{ request.META.HTTP_REFERER }}">Cancel</a>
+</div>
+{% endblock extra_options %}
 
 {% endblock content %}
 

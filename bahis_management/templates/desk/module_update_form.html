@@ -6,8 +6,7 @@
 {% endblock content_title %}
 
 {% block extra_options %}
-{% if list_definition %}
-    <a class="btn" href="/desk/list-definitions/update/{{ list_definition }}">Edit list definition</a>
-    <a class="btn" href="/desk/workflows/{{ list_definition }}">See workflows</a>
+{% if allow_workflows %}
+    <a class="btn" href="/desk/workflows/{{ object.form }}/">Workflows</a>
 {% endif %}
 {% endblock extra_options%}

@@ -7,11 +7,14 @@
 <h1> Template Create View</h1>
 {% endblock content_title %}
 
-<form method="post">{% csrf_token %}
+{% block declare_form %}
+<form method="post">
+{% endblock declare_form %}
+    {% csrf_token %}
     {{ form | materializecss}}
     <div class="col s12 right-align">
         <input class="btn waves-effect" type="submit" value="Save">
-        <a class="btn" href="{{request.META.HTTP_REFERER}}">Cancel</a>
+        <a class="btn" href="{% url request.resolver_match.app_name|add:':list' %}">Cancel</a>
     </div>
 </form>
 

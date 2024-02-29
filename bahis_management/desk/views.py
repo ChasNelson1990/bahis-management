@@ -1,99 +1,18 @@
 from bahis_management.desk.models import (
     Module,
-    ListDefinition,
     Workflow,
 )
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.list import ListView
 from django_filters.views import FilterView
-
-desk_module_list_definition_entry_fields = [
-    "title",
-    "form_id",
-    "column_definitions",
-    "filter_definitions",
-]
-
-
-class ListDefinitionList(FilterView):
-    template_name_suffix = "_list"
-    model = ListDefinition
-    paginate_by = 5
-    ordering = ["id"]
-    filterset_fields = {
-        "title": ["icontains"],
-        "form_id": ["exact"],
-    }
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["query"] = dict()
-        # remove page from query tag so pagination works in template
-        for k, v in context["filter"].data.items():
-            if k != "page":
-                context["query"][k] = v
-
-        # use paginator range with ellipses for simplicity
-        page = context["page_obj"]
-        context["paginator_range"] = page.paginator.get_elided_page_range(
-            page.number, on_each_side=2, on_ends=2
-        )
-
-        return context
-
-
-class ListDefinitionCreate(CreateView):
-    template_name_suffix = "_create_form"
-    model = ListDefinition
-    fields = desk_module_list_definition_entry_fields
-    success_url = reverse_lazy("desk:list")
-
-    def form_valid(self, form):
-        messages.success(
-            self.request, "The module list definition was created successfully."
-        )
-        return super(ListDefinitionCreate, self).form_valid(form)
-
-    def form_invalid(self, form):
-        messages.error(
-            self.request, "The module list definition was not created successfully."
-        )
-        form.error_css_class = "error"
-        return super(ListDefinitionCreate, self).form_invalid(form)
-
-
-class ListDefinitionUpdate(UpdateView):
-    template_name_suffix = "_update_form"
-    model = ListDefinition
-    fields = desk_module_list_definition_entry_fields
-    success_url = reverse_lazy("desk:list")
-
-    def form_valid(self, form):
-        messages.success(
-            self.request, "The module list definition was updated successfully."
-        )
-        return super(ListDefinitionUpdate, self).form_valid(form)
-
-
-class ListDefinitionDelete(DeleteView):
-    template_name_suffix = "_delete_form"
-    model = ListDefinition
-    success_url = reverse_lazy("desk:list")
-
-    def form_valid(self, form):
-        messages.success(
-            self.request, "The module list definition was deleted successfully."
-        )
-        return super(ListDefinitionDelete, self).form_valid(form)
-
 
 desk_module_entry_fields = [
     "title",
     "icon",
     "description",
-    "list_definition",
-    "form_id",
+    "form",
     "external_url",
     "module_type",
     "parent_module",
@@ -158,9 +77,8 @@ class ModuleUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.object.list_definition:
-            context["list_definition"] = self.object.list_definition.id
-
+        if self.object.module_type.title == "List":
+            context["allow_workflows"] = True
         return context
 
 
@@ -176,38 +94,38 @@ class ModuleDelete(DeleteView):
 
 desk_module_workflow_entry_fields = [
     "title",
-    "list_id",
-    "form_id",
-    "workflow_definition",
+    "source_form",
+    "destination_form",
+    "definition",
     "is_active",
 ]
 
 
-class WorkflowList(FilterView):
+class WorkflowList(ListView):
     template_name_suffix = "_list"
     model = Workflow
     paginate_by = 5
     ordering = ["id"]
-    filterset_fields = {
-        "title": ["icontains"],
-        "workflow_definition": ["icontains"],
-    }
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["query"] = dict()
-        # remove page from query tag so pagination works in template
-        for k, v in context["filter"].data.items():
-            if k != "page":
-                context["query"][k] = v
+    def get_queryset(self):
+        queryset = super().get_queryset() 
+        return queryset.filter(source_form__exact=self.kwargs["source_form"])
 
-        # use paginator range with ellipses for simplicity
-        page = context["page_obj"]
-        context["paginator_range"] = page.paginator.get_elided_page_range(
-            page.number, on_each_side=2, on_ends=2
-        )
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context["query"] = dict()
+    #     # remove page from query tag so pagination works in template
+    #     for k, v in context["filter"].data.items():
+    #         if k != "page":
+    #             context["query"][k] = v
 
-        return context
+    #     # use paginator range with ellipses for simplicity
+    #     page = context["page_obj"]
+    #     context["paginator_range"] = page.paginator.get_elided_page_range(
+    #         page.number, on_each_side=2, on_ends=2
+    #     )
+
+    #     return context
 
 
 class WorkflowCreate(CreateView):

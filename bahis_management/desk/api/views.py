@@ -1,12 +1,10 @@
 from bahis_management.desk.api.serializers import (
-    ListDefinitionSerializer,
     ModuleSerializer,
     ModuleTypeSerializer,
     WorkflowSerializer,
 )
 from bahis_management.desk.models import (
     Module,
-    ListDefinition,
     ModuleType,
     Workflow,
 )
@@ -20,18 +18,6 @@ class ModuleTypeViewSet(viewsets.ModelViewSet):
 
     queryset = ModuleType.objects.all().order_by("id")
     serializer_class = ModuleTypeSerializer
-    permission_classes = [
-        permissions.AllowAny
-    ]  # [permissions.IsAuthenticated] FIXME auth is turned off
-
-
-class ListDefinitionViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows ListDefinitions to be viewed or edited.
-    """
-
-    queryset = ListDefinition.objects.all().order_by("id")
-    serializer_class = ListDefinitionSerializer
     permission_classes = [
         permissions.AllowAny
     ]  # [permissions.IsAuthenticated] FIXME auth is turned off

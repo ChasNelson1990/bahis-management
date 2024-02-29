@@ -1,6 +1,5 @@
 from bahis_management.desk.models import (
     Module,
-    ListDefinition,
     ModuleType,
     Workflow,
 )
@@ -13,18 +12,6 @@ class ModuleTypeSerializer(serializers.ModelSerializer):
         fields = ["id", "title"]
 
 
-class ListDefinitionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ListDefinition
-        fields = [
-            "id",
-            "title",
-            "form_id",
-            "column_definitions",
-            "filter_definitions",
-        ]
-
-
 class ModuleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Module
@@ -33,8 +20,7 @@ class ModuleSerializer(serializers.ModelSerializer):
             "title",
             "icon",
             "description",
-            "list_definition",
-            "form_id",
+            "form",
             "external_url",
             "module_type",
             "parent_module",
@@ -49,8 +35,8 @@ class WorkflowSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "title",
-            "list_definition",
-            "form_id",
-            "workflow_definition",
+            "source_form",
+            "destination_form",
+            "definition",
             "is_active",
         ]
