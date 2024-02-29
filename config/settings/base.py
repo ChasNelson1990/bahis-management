@@ -91,6 +91,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "bahis_management.desk",
+    "bahis_management.taxonomies",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -198,6 +199,9 @@ TEMPLATES = [
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#form-renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
+
+# Append trailing slash to URLs
+APPEND_SLASH = True
 
 # FIXTURES
 # ------------------------------------------------------------------------------

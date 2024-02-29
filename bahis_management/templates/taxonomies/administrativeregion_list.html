@@ -1,0 +1,22 @@
+{% extends 'list.html' %}
+
+{% block content_title %}
+<h1>Adminstrative Regions</h1>
+{% endblock content_title %}
+
+{% block filter %}
+{% endblock filter %}
+
+{% block table_headers %}
+    <th>ID</th>
+    <th>Title</th>
+    <th>Level</th>
+    <th>Parent Region</th>
+{% endblock table_headers %}
+
+{% block table_rows %}
+    <td>{{ module.id }}</td>
+    <td>{{ module.title }}</td>
+    <td>{{ module.administrative_region_level }}</td>
+    <td>{{ module.parent_administrative_region }}</td>
+{% endblock table_rows %}

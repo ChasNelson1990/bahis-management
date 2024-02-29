@@ -36,6 +36,8 @@ urlpatterns += [
     ),
     # Desk Modules urls
     path("desk/", include("bahis_management.desk.urls")),
+    # Taxonomies urls
+    path("taxonomy/", include("bahis_management.taxonomies.urls")),
 ]
 
 if settings.DEBUG:

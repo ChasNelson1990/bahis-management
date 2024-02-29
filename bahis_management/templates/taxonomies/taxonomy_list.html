@@ -1,0 +1,20 @@
+{% extends 'list.html' %}
+
+{% block content_title %}
+<h1>Custom Taxonomies</h1>
+{% endblock content_title %}
+
+{% block filter %}
+{% endblock filter %}
+
+{% block table_headers %}
+    <th>Title</th>
+    <th>Slug</th>
+    <th>CSV File</th>
+{% endblock table_headers %}
+
+{% block table_rows %}
+    <td>{{ module.title }}</td>
+    <td>{{ module.slug }}</td>
+    <td><a href="{{ module.csv_file.url }}">{{ module.csv_file }}</a></td>
+{% endblock table_rows %}
