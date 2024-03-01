@@ -106,10 +106,10 @@ class Workflow(models.Model):
         help_text="The title of the workflow, this will be rendered as a button in the BAHIS-desk app",
     )
     source_form = models.IntegerField(
-        blank=True, null=True, help_text="The source form for this workflow"
+        blank=True, null=True, editable=False, help_text="The source form for this workflow"
     )  # TODO how to import from kobo in bahis 3, as a URL?, also - how to handle offline forms?
     destination_form = models.IntegerField(
-        blank=True, null=True, help_text="The destination form for this workflow"
+        blank=True, null=True, editable=False, help_text="The destination form for this workflow"
     )  # TODO how to import from kobo in bahis 3, as a URL?, also - how to handle offline forms?
     definition = models.JSONField(
         help_text="A JSON object mapping fields from the list definition's form to fields in the destination form definition"
