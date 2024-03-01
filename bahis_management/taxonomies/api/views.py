@@ -8,7 +8,7 @@ from bahis_management.taxonomies.models import (
     AdministrativeRegionLevel,
     Taxonomy,
 )
-from rest_framework import permissions, viewsets
+from rest_framework import parsers, permissions, viewsets
 
 
 class TaxonomyViewSet(viewsets.ModelViewSet):
@@ -17,6 +17,7 @@ class TaxonomyViewSet(viewsets.ModelViewSet):
     """
 
     queryset = Taxonomy.objects.all().order_by("slug")
+    parser_classes = (parsers.MultiPartParser, parsers.FormParser)
     serializer_class = TaxonomySerializer
     permission_classes = [permissions.AllowAny]  # [permissions.IsAuthenticated] FIXME auth is turned off
 
