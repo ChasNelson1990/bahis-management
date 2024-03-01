@@ -71,7 +71,7 @@ class AdministrativeRegion(models.Model):
     This model is used to define the administrative regions for a country.
     """
 
-    id = models.IntegerField(
+    id = models.PositiveBigIntegerField(
         primary_key=True,
         help_text="The heirarchical identifier for the administrative region level, e.g. a level 1 geography may have an id of 01, and a level 2 geography may have an id of 01001",
     )
@@ -91,6 +91,8 @@ class AdministrativeRegion(models.Model):
         null=True,
         help_text="The parent region of this region (leave blank for top level regions)",
     )
+    longitude = models.FloatField(null=True)
+    latitude = models.FloatField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
