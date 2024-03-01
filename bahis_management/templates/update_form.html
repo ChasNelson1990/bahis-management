@@ -3,9 +3,11 @@
 
 {% block content %}
 
+<h1>
 {% block content_title %}
-<h1> Template Update View</h1>
+Template Update View
 {% endblock content_title %}
+</h1>
 
 <form method="post">{% csrf_token %}
     {{ form | materializecss}}
@@ -16,7 +18,9 @@
         </div>
         <div class="col s6 right-align">
             <input class="btn" type="submit" value="Overwrite existing module">
-            <a class="btn" href="{{request.META.HTTP_REFERER}}">Cancel</a>
+            {% block cancel_button %}
+            <a class="btn tooltipped" data-tooltip="Go back" href="{% url request.resolver_match.app_name|add:':list' %}">Cancel</a>
+            {% endblock cancel_button %}
         </div>
     </div>
 </form>
@@ -28,6 +32,7 @@
         $(document).ready(function(){
             // Initialize materialize form selects
             $('select').formSelect();
+            $('.tooltipped').tooltip({enterDelay: 0, exitDelay: 0, inDuration: 100, outDuration: 100, margin: 2});
         });
     </script>
 {% endblock inline_javascript %}
