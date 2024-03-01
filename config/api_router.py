@@ -21,7 +21,7 @@ router.register("desk/module-types", ModuleTypeViewSet)
 router.register("desk/workflows", WorkflowViewSet)
 router.register("taxonomy/administrative-regions", AdministrativeRegionViewSet)
 router.register("taxonomy/administrative-region-levels", AdministrativeRegionLevelViewSet)
-router.register("taxonomy", TaxonomyViewSet)
+router.register("taxonomy/taxonomies", TaxonomyViewSet)
 
 app_name = "api"
 urlpatterns = router.urls
