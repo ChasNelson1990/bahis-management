@@ -37,7 +37,7 @@ class ModuleList(FilterView):
         context["query"] = dict()
         # remove page from query tag so pagination works in template
         for k, v in context["filter"].data.items():
-            if k != "page":
+            if k != "page" and v != "":
                 context["query"][k] = v
 
         # use paginator range with ellipses for simplicity
