@@ -33,7 +33,8 @@ class Taxonomy(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        # We use underscores for our slugs because that is consistent with what the XLSForms use
+        self.slug = slugify(self.title).replace("-", "_")
         super(Taxonomy, self).save(*args, **kwargs)
 
     def __str__(self):
