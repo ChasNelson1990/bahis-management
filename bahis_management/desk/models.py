@@ -40,7 +40,7 @@ class Module(models.Model):
         null=True,
         help_text="A description of the module, this will be rendered in the BAHIS-desk app",
     )
-    form = models.IntegerField(
+    form = models.TextField(
         blank=True,
         null=True,
         help_text="The form to be used for this module (if type is form or list)",
@@ -75,25 +75,6 @@ class Module(models.Model):
     def __str__(self):
         return self.title
 
-    class Meta:
-        constraints = [
-            models.CheckConstraint(
-                check=models.Q(
-                    form__isnull=True,
-                    external_url__isnull=True,
-                )
-                | models.Q(
-                    form__isnull=False,
-                    external_url__isnull=True,
-                )
-                | models.Q(
-                    form__isnull=True,
-                    external_url__isnull=False,
-                ),
-                name="check a maximum of one endpoint option is filled in",
-            )
-        ]
-
 
 class Workflow(models.Model):
     """
@@ -105,11 +86,11 @@ class Workflow(models.Model):
         max_length=150,
         help_text="The title of the workflow, this will be rendered as a button in the BAHIS-desk app",
     )
-    source_form = models.IntegerField(
-        blank=True, null=True, editable=False, help_text="The source form for this workflow"
+    source_form = models.TextField(
+        blank=True, null=True, help_text="The source form for this workflow"
     )  # TODO how to import from kobo in bahis 3, as a URL?, also - how to handle offline forms?
-    destination_form = models.IntegerField(
-        blank=True, null=True, editable=False, help_text="The destination form for this workflow"
+    destination_form = models.TextField(
+        blank=True, null=True, help_text="The destination form for this workflow"
     )  # TODO how to import from kobo in bahis 3, as a URL?, also - how to handle offline forms?
     definition = models.JSONField(
         help_text="A JSON object mapping fields from the list definition's form to fields in the destination form definition"
