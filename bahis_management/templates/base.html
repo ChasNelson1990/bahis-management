@@ -63,14 +63,14 @@
                     </li>
                     {% if user %}
                     <li>
-                        <a href="/logout/">
+                        <a href="{% url 'logout' %}">
                             <i class="material-symbols-outlined left">logout</i>
                             Log out
                         </a>
                     </li>
                     {% else %}
                     <li>
-                        <a href="/login/">
+                        <a href="{% url 'login' %}">
                             <i class="material-symbols-outlined left">login</i>
                             Log in
                         </a>

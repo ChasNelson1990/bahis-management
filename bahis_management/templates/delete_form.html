@@ -1,4 +1,4 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
 
 {% block content %}
 
@@ -12,8 +12,8 @@ Template Delete View
     <p>Are you sure you want to delete "{{ object }}"?</p>
     {{ form }}
     <div class="col s12 right-align">
-        <input class="btn" type="submit" value="Confirm delete">
-        <a class="btn tooltipped" data-tooltip="Go back" href="{{request.META.HTTP_REFERER}}">Cancel</a>
+        <input class="btn" type="submit" value="Confirm delete" />
+        <a class="btn tooltipped" data-tooltip="Go back" href="{{ request.META.HTTP_REFERER }}">Cancel</a>
     </div>
 </form>
 

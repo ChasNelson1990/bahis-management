@@ -1,6 +1,5 @@
-{%extends 'update_form.html'%}
+{% extends 'update_form.html' %}
 {% load static %}
-
 
 {% block css %}
     {{ block.super }}
@@ -13,12 +12,11 @@ Update Desktop App Module
 
 {% block extra_options %}
 {% if allow_workflows %}
-    <a class="btn tooltipped" data-tooltip="See workflows for this list" href="/desk/workflows/{{ object.form }}/">Workflows</a>
+    <a class="btn tooltipped" data-tooltip="See workflows for this list" href="{% 'workflows_list' object.form %}/">Workflows</a>
 {% endif %}
-{% endblock extra_options%}
+{% endblock extra_options %}
 
 {% block inline_javascript %}
     {{ block.super }}
     <script src="{% static 'js/material-icon-picker.js' %}"></script>
 {% endblock inline_javascript %}
-

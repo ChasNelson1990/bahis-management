@@ -1,8 +1,6 @@
 from typing import Any
 
 import requests
-from bahis_management.desk.models import Module, Workflow
-from config.settings.base import env
 from django.contrib import messages
 from django.forms import TextInput
 from django.forms.models import BaseModelForm
@@ -12,6 +10,9 @@ from django.utils.safestring import mark_safe
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from django_filters.views import FilterView
+
+from bahis_management.desk.models import Module, Workflow
+from config.settings.base import env
 
 desk_module_entry_fields = [
     "title",
@@ -32,14 +33,10 @@ def get_kobotoolbox_forms():
 
     api_token = env("KOBOTOOLBOX_API_TOKEN")
 
-    response = requests.get(
-        f"{api_url}assets/?format=json", headers={"Authorization": f"Token {api_token}"}
-    )
+    response = requests.get(f"{api_url}assets/?format=json", headers={"Authorization": f"Token {api_token}"})
     asset_list = response.json().get("results")
 
-    deployed_form_list = [
-        asset for asset in asset_list if asset.get("has_deployment", False)
-    ]
+    deployed_form_list = [asset for asset in asset_list if asset.get("has_deployment", False)]
 
     form_options = []
     form_options.append({"id": None, "name": "--------", "description": ""})
@@ -72,9 +69,7 @@ class KoboToolboxFormPicker(TextInput):
 
         if attrs is not None:
             flat_attrs = flatatt(attrs)
-            html = (
-                f'  <select name="{name}" {flat_attrs}> ' + form_options + "</select>"
-            )
+            html = f'  <select name="{name}" {flat_attrs}> ' + form_options + "</select>"
         else:
             html = f'  <select name="{name}"> ' + form_options + "</select>"
         return mark_safe(html)
@@ -88,14 +83,14 @@ class MaterialUIIconPicker(TextInput):
         if attrs is not None:
             flat_attrs = flatatt(attrs)
             if value:
-                html = f'<input name={name} {flat_attrs} type="text" class="form-control use-material-icon-picker" value={value}>'
+                html = f'<input name={name} {flat_attrs} type="text" class="use-material-icon-picker" value={value}>'
             else:
-                html = f'<input name={name} {flat_attrs} type="text" class="form-control use-material-icon-picker">'
+                html = f'<input name={name} {flat_attrs} type="text" class="use-material-icon-picker">'
         else:
             if value:
-                html = f'<input name={name} type="text" class="form-control use-material-icon-picker" value={value}>'
+                html = f'<input name={name} type="text" class="use-material-icon-picker" value={value}>'
             else:
-                html = f'<input name={name} type="text" class="form-control use-material-icon-picker">'
+                html = f'<input name={name} type="text" class="use-material-icon-picker">'
         return mark_safe(html)
 
 
@@ -120,9 +115,7 @@ class ModuleList(FilterView):
 
         # use paginator range with ellipses for simplicity
         page = context["page_obj"]
-        context["paginator_range"] = page.paginator.get_elided_page_range(
-            page.number, on_each_side=2, on_ends=2
-        )
+        context["paginator_range"] = page.paginator.get_elided_page_range(page.number, on_each_side=2, on_ends=2)
 
         return context
 
@@ -219,9 +212,7 @@ class WorkflowCreate(CreateView):
         return super(WorkflowCreate, self).form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(
-            self.request, "The module workflow was not created successfully."
-        )
+        messages.error(self.request, "The module workflow was not created successfully.")
         form.error_css_class = "error"
         return super(WorkflowCreate, self).form_invalid(form)
 

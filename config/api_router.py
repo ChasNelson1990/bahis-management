@@ -1,18 +1,14 @@
-from bahis_management.desk.api.views import (
-    ModuleTypeViewSet,
-    ModuleViewSet,
-    WorkflowViewSet,
-)
+from django.conf import settings
+from django.urls import path
+from rest_framework.routers import DefaultRouter, SimpleRouter
+
+from bahis_management.desk.api.views import ModuleTypeViewSet, ModuleViewSet, WorkflowViewSet
 from bahis_management.taxonomies.api.views import (
     AdministrativeRegionCatchmentView,
     AdministrativeRegionLevelViewSet,
     AdministrativeRegionViewSet,
     TaxonomyViewSet,
 )
-from django.conf import settings
-from django.urls import path
-from rest_framework.routers import DefaultRouter, SimpleRouter
-
 
 # API Routers
 if settings.DEBUG:
@@ -24,9 +20,7 @@ router.register("desk/modules", ModuleViewSet)
 router.register("desk/module-types", ModuleTypeViewSet)
 router.register("desk/workflows", WorkflowViewSet)
 router.register("taxonomy/administrative-regions", AdministrativeRegionViewSet)
-router.register(
-    "taxonomy/administrative-region-levels", AdministrativeRegionLevelViewSet
-)
+router.register("taxonomy/administrative-region-levels", AdministrativeRegionLevelViewSet)
 router.register("taxonomy/taxonomies", TaxonomyViewSet)
 
 app_name = "api"

@@ -1,9 +1,6 @@
-from bahis_management.desk.models import (
-    Module,
-    ModuleType,
-    Workflow,
-)
 from rest_framework import serializers
+
+from bahis_management.desk.models import Module, ModuleType, Workflow
 
 
 class ModuleTypeSerializer(serializers.ModelSerializer):

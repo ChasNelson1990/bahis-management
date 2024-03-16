@@ -4,11 +4,13 @@ from django.template.defaultfilters import slugify
 
 def validate_file_is_csv(value):
     import os
+
     from django.core.exceptions import ValidationError
+
     ext = os.path.splitext(value.name)[1]  # [0] returns path+filename
-    valid_extensions = ['.csv']
+    valid_extensions = [".csv"]
     if not ext.lower() in valid_extensions:
-        raise ValidationError('Unsupported file extension - only CSV files are supported,')
+        raise ValidationError("Unsupported file extension - only CSV files are supported,")
 
 
 class Taxonomy(models.Model):
@@ -74,7 +76,9 @@ class AdministrativeRegion(models.Model):
 
     id = models.PositiveBigIntegerField(
         primary_key=True,
-        help_text="The heirarchical identifier for the administrative region level, e.g. a level 1 geography may have an id of 01, and a level 2 geography may have an id of 01001",
+        help_text="The heirarchical identifier for the administrative region level, \
+            e.g. a level 1 geography may have an id of 01 \
+            and a level 2 geography may have an id of 01001",
     )
     title = models.CharField(
         max_length=150,

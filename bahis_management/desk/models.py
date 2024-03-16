@@ -66,9 +66,7 @@ class Module(models.Model):
         default=0,
         help_text="The sort order for this module in the BAHIS-desk app (smaller means higher)",
     )
-    is_active = models.BooleanField(
-        default=True, help_text="Whether this module is active in the BAHIS-desk app"
-    )
+    is_active = models.BooleanField(default=True, help_text="Whether this module is active in the BAHIS-desk app")
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
@@ -93,11 +91,9 @@ class Workflow(models.Model):
         blank=True, null=True, help_text="The destination form for this workflow"
     )  # TODO how to import from kobo in bahis 3, as a URL?, also - how to handle offline forms?
     definition = models.JSONField(
-        help_text="A JSON object mapping fields from the list definition's form to fields in the destination form definition"
+        help_text="A JSON object mapping fields from the source form to fields in the destination form"
     )
-    is_active = models.BooleanField(
-        default=True, help_text="Whether this workflow is active in the BAHIS-desk app"
-    )
+    is_active = models.BooleanField(default=True, help_text="Whether this workflow is active in the BAHIS-desk app")
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 

@@ -13,6 +13,7 @@ urlpatterns = [
     path("", views.home, name="home"),
     # AuthLib OAUTH2 client
     path("login/", views.login, name="login"),
+    path("logout/", views.logout, name="logout"),
     path("auth/", views.auth, name="auth"),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),

@@ -1,5 +1,6 @@
-from bahis_management.taxonomies import views
 from django.urls import path
+
+from bahis_management.taxonomies import views
 
 app_name = "taxonomies"
 urlpatterns = [

@@ -1,4 +1,4 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
 {% load materializecss %}
 
 {% block content %}
@@ -10,14 +10,14 @@ Template Update View
 </h1>
 
 <form method="post">{% csrf_token %}
-    {{ form | materializecss}}
+    {{ form | materializecss }}
     <div class="row">
         <div class="col s6 left-align">
             {% block extra_options %}
             {% endblock extra_options %}
         </div>
         <div class="col s6 right-align">
-            <input class="btn" type="submit" value="Overwrite existing module">
+            <input class="btn" type="submit" value="Overwrite existing module" />
             {% block cancel_button %}
             <a class="btn tooltipped" data-tooltip="Go back" href="{% url request.resolver_match.app_name|add:':list' %}">Cancel</a>
             {% endblock cancel_button %}

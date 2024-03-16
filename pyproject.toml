@@ -2,7 +2,14 @@
 [tool.black]
 line-length = 120
 target-version = ['py311']
+exclude = '''
+/(
+    \.git
+  | \.venv
+  | migrations
+)/
 
+'''
 
 # ==== isort ====
 [tool.isort]
@@ -12,7 +19,7 @@ known_first_party = [
     "bahis_management",
     "config",
 ]
-skip = ["venv/"]
+skip = [".venv/"]
 skip_glob = ["**/migrations/*.py"]
 
 

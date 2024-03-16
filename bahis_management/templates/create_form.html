@@ -1,4 +1,4 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
 {% load materializecss %}
 
 {% block content %}
@@ -13,9 +13,9 @@ Template Create View
 <form method="post">
 {% endblock declare_form %}
     {% csrf_token %}
-    {{ form | materializecss}}
+    {{ form | materializecss }}
     <div class="col s12 right-align">
-        <input class="btn waves-effect" type="submit" value="Save">
+        <input class="btn waves-effect" type="submit" value="Save" />
         {% block cancel_button %}
         <a class="btn tooltipped" data-tooltip="Go back" href="{% url request.resolver_match.app_name|add:':list' %}">Cancel</a>
         {% endblock cancel_button %}

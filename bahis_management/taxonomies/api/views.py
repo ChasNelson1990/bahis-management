@@ -1,21 +1,11 @@
+from rest_framework import parsers, permissions, response, status, views, viewsets
+
 from bahis_management.taxonomies.api.serializers import (
     AdministrativeRegionLevelSerializer,
     AdministrativeRegionSerializer,
     TaxonomySerializer,
 )
-from bahis_management.taxonomies.models import (
-    AdministrativeRegion,
-    AdministrativeRegionLevel,
-    Taxonomy,
-)
-from rest_framework import (
-    response,
-    parsers,
-    permissions,
-    status,
-    views,
-    viewsets,
-)
+from bahis_management.taxonomies.models import AdministrativeRegion, AdministrativeRegionLevel, Taxonomy
 
 
 class TaxonomyViewSet(viewsets.ModelViewSet):
@@ -26,9 +16,7 @@ class TaxonomyViewSet(viewsets.ModelViewSet):
     queryset = Taxonomy.objects.all().order_by("slug")
     parser_classes = (parsers.MultiPartParser, parsers.FormParser)
     serializer_class = TaxonomySerializer
-    permission_classes = [
-        permissions.AllowAny
-    ]  # [permissions.IsAuthenticated] FIXME auth is turned off
+    permission_classes = [permissions.AllowAny]  # [permissions.IsAuthenticated] FIXME auth is turned off
 
 
 class AdministrativeRegionLevelViewSet(viewsets.ModelViewSet):
@@ -38,9 +26,7 @@ class AdministrativeRegionLevelViewSet(viewsets.ModelViewSet):
 
     queryset = AdministrativeRegionLevel.objects.all().order_by("id")
     serializer_class = AdministrativeRegionLevelSerializer
-    permission_classes = [
-        permissions.AllowAny
-    ]  # [permissions.IsAuthenticated] FIXME auth is turned off
+    permission_classes = [permissions.AllowAny]  # [permissions.IsAuthenticated] FIXME auth is turned off
 
 
 class AdministrativeRegionViewSet(viewsets.ModelViewSet):
@@ -50,9 +36,7 @@ class AdministrativeRegionViewSet(viewsets.ModelViewSet):
 
     queryset = AdministrativeRegion.objects.all().order_by("id")
     serializer_class = AdministrativeRegionSerializer
-    permission_classes = [
-        permissions.AllowAny
-    ]  # [permissions.IsAuthenticated] FIXME auth is turned off
+    permission_classes = [permissions.AllowAny]  # [permissions.IsAuthenticated] FIXME auth is turned off
 
 
 class AdministrativeRegionCatchmentView(views.APIView):
@@ -62,9 +46,7 @@ class AdministrativeRegionCatchmentView(views.APIView):
     line of parents up to the top level.
     """
 
-    permission_classes = [
-        permissions.AllowAny
-    ]  # [permissions.IsAuthenticated] FIXME auth is turned off
+    permission_classes = [permissions.AllowAny]  # [permissions.IsAuthenticated] FIXME auth is turned off
 
     def get(self, request, format=None):
         """
@@ -73,18 +55,14 @@ class AdministrativeRegionCatchmentView(views.APIView):
         serializer = AdministrativeRegionSerializer
 
         def get_direct_parent(region_id):
-            parent = AdministrativeRegion.objects.get(
-                id=region_id
-            ).parent_administrative_region
+            parent = AdministrativeRegion.objects.get(id=region_id).parent_administrative_region
             if parent is None:
                 return []
             else:
                 return [parent] + get_direct_parent(parent.id)
 
         def get_all_children(region_id):
-            children = AdministrativeRegion.objects.filter(
-                parent_administrative_region=region_id
-            )
+            children = AdministrativeRegion.objects.filter(parent_administrative_region=region_id)
             if len(children) == 0:
                 return []
             else:
@@ -96,9 +74,7 @@ class AdministrativeRegionCatchmentView(views.APIView):
 
         region_id = request.query_params.get("id", None)
         if region_id is None:
-            return response.Response(
-                "No region id provided", status=status.HTTP_400_BAD_REQUEST
-            )
+            return response.Response("No region id provided", status=status.HTTP_400_BAD_REQUEST)
         else:
             region = AdministrativeRegion.objects.get(id=int(region_id))
             direct_parents = get_direct_parent(region.id)
