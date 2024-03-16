@@ -5,6 +5,8 @@ from django.conf import settings
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
+from config.settings.base import env
+
 oauth = OAuth()
 oauth.register(
     name="bahis_oidc",
@@ -17,7 +19,10 @@ def home(request):
     user = request.session.get("user")
     if user:
         user = json.dumps(user)
-    return render(request, "portal/home.html", context={"user": user})
+
+    kobo_url = env("KOBOTOOLBOX_URL")
+    dash_url = env("BAHIS_DASHBOARD_URL")
+    return render(request, "portal/home.html", context={"user": user, "kobo_url": kobo_url, "dash_url": dash_url})
 
 
 def login(request):

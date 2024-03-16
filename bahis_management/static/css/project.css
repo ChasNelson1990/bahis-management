@@ -77,3 +77,10 @@ form > div > p.help-block {
   background-color: #f8d7da;
   border-color: #f5c2c7;
 }
+
+.portal-menu i {
+    margin: 40px 0;
+    color: #ee6e73;
+    font-size: 7rem;
+    display: block;
+}
