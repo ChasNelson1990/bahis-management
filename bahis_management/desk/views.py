@@ -36,10 +36,13 @@ def get_kobotoolbox_forms():
     response = requests.get(f"{api_url}assets/?format=json", headers={"Authorization": f"Token {api_token}"})
     asset_list = response.json().get("results")
 
-    deployed_form_list = [asset for asset in asset_list if asset.get("has_deployment", False)]
-
     form_options = []
-    form_options.append({"id": None, "name": "--------", "description": ""})
+    if asset_list:
+        deployed_form_list = [asset for asset in asset_list if asset.get("has_deployment", False)]
+
+        form_options.append({"id": None, "name": "--------", "description": ""})
+    else:
+        form_options.append({"id": None, "name": "--------", "description": "There are no forms in the BAHIS KoboToolbox instance"})
 
     for form in deployed_form_list:
         form_options.append(
