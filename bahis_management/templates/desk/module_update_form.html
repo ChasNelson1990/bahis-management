@@ -12,7 +12,7 @@ Update Desktop App Module
 
 {% block extra_options %}
 {% if allow_workflows %}
-    <a class="btn tooltipped" data-tooltip="See workflows for this list" href="{% url 'workflows_list' object.form %}/">Workflows</a>
+    <a class="btn tooltipped" data-tooltip="See workflows for this list" href="{% url 'desk:workflows_list' object.form %}">Workflows</a>
 {% endif %}
 {% endblock extra_options %}
 

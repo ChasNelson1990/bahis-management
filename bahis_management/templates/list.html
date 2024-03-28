@@ -14,7 +14,9 @@ Template List View
 {% block content_list %}
 <div class="row">
     <div class="col s12 right-align">
+        {% block create_button %}
         <a class="btn-floating btn-large waves-effect waves-light tooltipped" data-tooltip="Create" href="{% url request.resolver_match.app_name|add:':create' %}"><i class="material-symbols-outlined">add</i></a>
+        {% endblock create_button %}
     </div>
 </div>
 

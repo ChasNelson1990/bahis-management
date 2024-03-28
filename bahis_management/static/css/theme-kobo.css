@@ -2927,20 +2927,6 @@
   clip: auto;
 }
 
-@font-face {
-  font-family: "OpenSans";
-  src: url("../fonts/OpenSans-Regular-webfont.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "OpenSans";
-  src: url("../fonts/OpenSans-Bold-webfont.woff") format("woff");
-  font-weight: bold;
-  font-style: normal;
-}
-
 /** The next styles are meant to easily customize the background and border of radiobuttons and checkboxes, not their size! */
 /** end radiobuttons and checkboxes */
 @keyframes pulsate {
@@ -2976,7 +2962,7 @@ html {
 }
 
 body {
-  font-family: "OpenSans", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
   font-size: 15px;
   line-height: 1.42857;
@@ -3662,7 +3648,7 @@ button {
   border-style: solid;
   border-width: 1px;
   cursor: pointer;
-  font-family: "OpenSans";
+  font-family: "Open Sans";
   font-weight: normal;
   line-height: normal;
   position: relative;
@@ -4580,7 +4566,7 @@ body {
 
 /** hints **/
 .or-hint.active {
-  font-family: "OpenSans", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
   color: #888888;
   display: block;
@@ -4813,7 +4799,7 @@ legend {
   flex-direction: column;
 }
 .option-wrapper > label {
-  font-family: "OpenSans", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
   display: block;
   margin: 0;
@@ -5172,7 +5158,7 @@ legend .required {
 }
 .bootstrap-select .dropdown-toggle {
   width: 374.3272px;
-  font-family: "OpenSans", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-align: left;
@@ -5201,7 +5187,7 @@ legend .required {
   text-decoration: none;
 }
 .bootstrap-select .dropdown-toggle ~ .dropdown-menu .option-wrapper label {
-  font-family: "OpenSans", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
   padding-top: 2px;
   padding-bottom: 2px;
@@ -5473,7 +5459,7 @@ input[type="text"].autocomplete.notfound {
   order: 3;
 }
 .geopicker .close-chain-btn {
-  font-family: "OpenSans", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
   display: inline-block;
   padding: 0 5px;
@@ -5552,7 +5538,7 @@ input[type="text"].autocomplete.notfound {
   width: 50%;
 }
 .geopicker label.geo {
-  font-family: "OpenSans", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
   display: block;
   border: none;
@@ -5638,7 +5624,7 @@ input[type="text"].autocomplete.notfound {
   position: absolute;
   top: -10px;
   right: 0;
-  font-family: "OpenSans", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
   font-size: 12px;
 }
@@ -7568,7 +7554,7 @@ table th[class*="col-"] {
   display: block;
   height: 34px;
   padding: 6px 12px;
-  font-family: "OpenSans", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
   font-size: 15px;
   line-height: 1.42857;
@@ -7612,7 +7598,7 @@ fieldset[disabled] .file-picker .fake-file-input {
 
 .file-picker .file-feedback,
 .file-picker .file-preview {
-  font-family: "OpenSans", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
 }
 
@@ -7674,7 +7660,7 @@ fieldset[disabled] .file-picker .fake-file-input {
   display: block;
   height: 34px;
   padding: 6px 12px;
-  font-family: "OpenSans", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
   font-size: 15px;
   line-height: 1.42857;
@@ -8029,7 +8015,7 @@ fieldset[disabled] .draw-widget__body__canvas {
   padding-top: 15px;
   border-top: 3px solid #cccccc;
   font-size: 12px;
-  font-family: "OpenSans", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
 }
 .or-appearance-likert
@@ -10037,7 +10023,7 @@ fieldset[disabled] .draw-widget__body__canvas {
 }
 .or-comment-widget__question-label,
 .or-comment-widget__question-value {
-  font-family: "OpenSans", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
   font-style: italic;
   padding-right: 35px;
@@ -10314,7 +10300,7 @@ textarea {
   display: block;
   height: 34px;
   padding: 6px 12px;
-  font-family: "OpenSans", Arial, sans-serif;
+  font-family: "Open Sans", Arial, sans-serif;
   font-weight: normal;
   font-size: 15px;
   line-height: 1.42857;
