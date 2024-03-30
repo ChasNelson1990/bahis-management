@@ -25,3 +25,8 @@ Desktop App Workflows
     <td>{{ module.destination_form }}</td>
     <td><label for="checkbox-for-{{ module.id }}"><input id="checkbox-for-{{ module.id }}" class="filled-in" type="checkbox" {% if module.is_active %} checked {% endif %} disabled/><span></span></label></td>
 {% endblock table_rows %}
+
+{% block update_delete_buttons %}
+<a class="tooltipped" data-tooltip="Edit" href="{% url 'desk:workflows_update' module.id %}"><i class="material-symbols-outlined">edit</i></a>
+<a class="tooltipped" data-tooltip="Delete" href="{% url 'desk:workflows_delete' module.id %}"><i class="material-symbols-outlined">delete</i></a>
+{% endblock update_delete_buttons %}
