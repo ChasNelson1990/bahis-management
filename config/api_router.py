@@ -9,6 +9,7 @@ from bahis_management.taxonomies.api.views import (
     AdministrativeRegionViewSet,
     TaxonomyViewSet,
 )
+from users.views import APIAuth
 
 # API Routers
 if settings.DEBUG:
@@ -16,7 +17,7 @@ if settings.DEBUG:
 else:
     router = SimpleRouter()
 
-router.register("desk/modules", ModuleViewSet)
+router.register("desk/modules", ModuleViewSet, basename='Module')
 router.register("desk/module-types", ModuleTypeViewSet)
 router.register("desk/workflows", WorkflowViewSet)
 router.register("taxonomy/administrative-regions", AdministrativeRegionViewSet)
@@ -32,4 +33,8 @@ urlpatterns.append(
         "taxonomy/administrative-regions-catchment/",
         AdministrativeRegionCatchmentView.as_view(),
     )
+)
+# api login endpoints
+urlpatterns.append(
+    path("auth/", APIAuth.as_view())
 )
