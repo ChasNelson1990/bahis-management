@@ -122,7 +122,10 @@ class ModuleList(LoginRequiredMixin, FilterView):
     }
 
     def get_queryset(self):
-        ids = [i.id for i in get_modules_for_user(self.request)]
+        modules = get_modules_for_user(self.request)
+        ids = []
+        if modules:
+            ids = [i.id for i in modules]
         return Module.objects.filter(id__in=ids)
 
     def get_context_data(self, **kwargs):
