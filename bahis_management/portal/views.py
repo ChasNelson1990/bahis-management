@@ -9,7 +9,6 @@ from requests_oauthlib import OAuth2Session
 from django.conf import settings
 from django.shortcuts import render, redirect
 
-
 oauth = settings.AUTHLIB_OAUTH_CLIENTS['bahis_oidc']
 scope = ['openid', 'email', 'profile', 'introspection']
 # scope = ['read', 'write',]
