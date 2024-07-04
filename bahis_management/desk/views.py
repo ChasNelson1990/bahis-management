@@ -69,6 +69,7 @@ class KoboToolboxFormPicker(TextInput):
     def __init__(self, request):
         super().__init__()
         self.request = request
+
     def render(self, name, value, attrs: dict[str, Any] | None = None, **kwargs):
         super().render(name, value, attrs)
 
