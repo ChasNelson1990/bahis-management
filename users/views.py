@@ -16,11 +16,11 @@ class APIAuth(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
+        user = serializer.validated_data["user"]
         token, created = Token.objects.get_or_create(user=user)
         upz = Profile.objects.filter(user=user).first()
         if upz:
-            return Response({'user': UserSerializer(user).data, 'token': token.key, 'upazila': upz.upazila_code})
+            return Response({"user": UserSerializer(user).data, "token": token.key, "upazila": upz.upazila_code})
         else:
             # "Only upazilas can use BAHIS-desk"
             raise Http404

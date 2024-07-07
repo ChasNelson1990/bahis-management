@@ -137,27 +137,30 @@ if OAUTH2_SERVER_URL := env("OAUTH2_SERVER_URL"):
     OAUTH2_SERVER_METADATA_URL = OAUTH2_SERVER_URL + "/.well-known/openid-configuration/"
 
 AUTHLIB_OAUTH_CLIENTS = {
-    'bahis_oidc': {
-        'client_id': env('OAUTH2_CLIENT_ID'),
-        'client_secret': env.str('OAUTH2_CLIENT_SECRET'),
-        'api_base_url': OAUTH2_API_BASE_URL,
-        'authorization_base_url': OAUTH2_SERVER_URL + 'authorize',
-        'token_url': OAUTH2_SERVER_URL + 'token/',
-        'user_info_url': OAUTH2_SERVER_URL + 'userinfo',
-        'scope': ["profile", 'email', ]
+    "bahis_oidc": {
+        "client_id": env("OAUTH2_CLIENT_ID"),
+        "client_secret": env.str("OAUTH2_CLIENT_SECRET"),
+        "api_base_url": OAUTH2_API_BASE_URL,
+        "authorization_base_url": OAUTH2_SERVER_URL + "authorize",
+        "token_url": OAUTH2_SERVER_URL + "token/",
+        "user_info_url": OAUTH2_SERVER_URL + "userinfo",
+        "scope": [
+            "profile",
+            "email",
+        ],
     }
 }
 
 OAUTH2_PROVIDER = {
-    'RESOURCE_SERVER_INTROSPECTION_URL': OAUTH2_SERVER_URL + 'introspect/',
+    "RESOURCE_SERVER_INTROSPECTION_URL": OAUTH2_SERVER_URL + "introspect/",
     # 'RESOURCE_SERVER_AUTH_TOKEN': 'j6YaTw2hNmPjThNdZwAtZu22p0FAtz',  # OR this but not both:
-    'RESOURCE_SERVER_INTROSPECTION_CREDENTIALS': (env('OAUTH2_CLIENT_ID'), env.str('OAUTH2_CLIENT_SECRET')),
+    "RESOURCE_SERVER_INTROSPECTION_CREDENTIALS": (env("OAUTH2_CLIENT_ID"), env.str("OAUTH2_CLIENT_SECRET")),
 }
 
 AUTHENTICATION_BACKENDS = [
     # 'oauth2_provider.backends.OAuth2Backend',
     # Uncomment following if you want to access the admin
-    'django.contrib.auth.backends.ModelBackend',
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 # MIDDLEWARE
@@ -172,7 +175,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    'oauth2_provider.middleware.OAuth2TokenMiddleware',
+    "oauth2_provider.middleware.OAuth2TokenMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -292,9 +295,7 @@ REST_FRAMEWORK = {
     #     "rest_framework.authentication.SessionAuthentication",
     #     "rest_framework.authentication.TokenAuthentication",
     # ), FIXME auth is turned off
-    "DEFAULT_PERMISSION_CLASSES": (
-        "rest_framework.permissions.IsAuthenticated"
-    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated"),
     # ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }

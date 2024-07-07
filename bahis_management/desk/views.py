@@ -65,7 +65,6 @@ def get_kobotoolbox_forms(request):
 
 
 class KoboToolboxFormPicker(TextInput):
-
     def __init__(self, request):
         super().__init__()
         self.request = request

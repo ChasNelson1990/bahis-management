@@ -19,9 +19,10 @@ def get_modules_for_user(request):
     asset_list = get_assets_for_user(request)
 
     if asset_list:
-        asset_id_list = tuple([asset.get('uid') for asset in asset_list if asset.get("has_deployment", False)])
+        asset_id_list = tuple([asset.get("uid") for asset in asset_list if asset.get("has_deployment", False)])
 
-        return Module.objects.raw(f'''
+        return Module.objects.raw(
+            f"""
                                 WITH RECURSIVE module(id) AS (SELECT *
                                             FROM desk_module
                                             WHERE form in ({', '.join("'" + str(id) + "'" for id in asset_id_list)})
@@ -32,4 +33,5 @@ def get_modules_for_user(request):
                                             WHERE dm.id = m.parent_module_id)
                                 SELECT *
                                 FROM module order by parent_module_id, sort_order
-                                ''')
+                                """
+        )

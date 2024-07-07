@@ -9,17 +9,18 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 from bahis_management.portal import views
 
-urlpatterns = [path("", views.home, name="home"),
-               path("accounts/", include("users.urls")),
-               # # AuthLib OAUTH2 client
-               path("login/", views.login, name="login"),
-               path("callback/", views.callback, name=" callback"),
-               path("profile/", views.profile, name=" profile"),
-               path("logout/", views.logout, name="logout"),
-               # Django Admin, use {% url 'admin:index' %}
-               path(settings.ADMIN_URL, admin.site.urls),
-               # Your stuff: custom urls includes go here
-               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns = [
+    path("", views.home, name="home"),
+    path("accounts/", include("users.urls")),
+    # # AuthLib OAUTH2 client
+    path("login/", views.login, name="login"),
+    path("callback/", views.callback, name=" callback"),
+    path("profile/", views.profile, name=" profile"),
+    path("logout/", views.logout, name="logout"),
+    # Django Admin, use {% url 'admin:index' %}
+    path(settings.ADMIN_URL, admin.site.urls),
+    # Your stuff: custom urls includes go here
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     # Static file serving when using Gunicorn + Uvicorn for local web socket development
     urlpatterns += staticfiles_urlpatterns()
@@ -40,7 +41,7 @@ urlpatterns += [
     path("desk/", include("bahis_management.desk.urls")),
     # Taxonomies urls
     path("taxonomy/", include("bahis_management.taxonomies.urls")),
-    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    path("o/", include("oauth2_provider.urls", namespace="oauth2_provider")),
 ]
 
 if settings.DEBUG:
