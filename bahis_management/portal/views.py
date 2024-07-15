@@ -1,13 +1,13 @@
-import random
-import string
 import base64
 import hashlib
+import random
+import string
 
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponse
-from requests_oauthlib import OAuth2Session
 from django.conf import settings
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import redirect, render
+from requests_oauthlib import OAuth2Session
 
 oauth = settings.AUTHLIB_OAUTH_CLIENTS["bahis_oidc"]
 scope = ["openid", "email", "profile", "introspection"]
