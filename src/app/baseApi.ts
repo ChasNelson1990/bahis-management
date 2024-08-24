@@ -13,6 +13,6 @@ export const baseApi = createApi({
         },
     ),
     // reducerPath: "permissionApi",
-    // tagTypes: ["Permission"],
+    // tagTypes: ["Permissions"],
     endpoints: () => ({}),
 })

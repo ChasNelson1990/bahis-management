@@ -1,18 +1,27 @@
-import {useState} from "react";
-import {useGetPermissionsQuery} from "./permissionApiSlice.ts";
+import {UserPermission} from "./Permission.model.ts";
+import {PermissionTreeItem} from "./PermissionTreeItem.tsx";
+import {PARTIAL_SUBMIT} from "./permissionSlice.ts";
 
-interface PremissionProps {
-    formId: string
+
+// type PermissionProps = TreeItem2Props & {
+type PermissionProps = {
+    userPermission: { [key: string]: UserPermission, }
+    user: string
 }
 
-export const Permission = (props: PremissionProps) => {
 
-    const {data} = useGetPermissionsQuery(props.formId)
-    return (<div>
-            Permissions
-            <div>
-                {JSON.stringify(data)}
-            </div>
-        </div>
-    )
-}
+export const Permission = ({userPermission, user}: PermissionProps) => {
+    return (
+        <>
+            {Object.keys(userPermission)?.map(permission => (
+                (permission != PARTIAL_SUBMIT) &&
+                <PermissionTreeItem
+                    permitData={userPermission[permission]}
+                    user={user}
+                    itemId={userPermission[permission].id}
+                    label={userPermission[permission].label}
+                    key={userPermission[permission].permission}/>
+            ))}
+        </>
+    );
+};

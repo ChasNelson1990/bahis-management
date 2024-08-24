@@ -1,4 +1,5 @@
 import {baseApi} from "../../app/baseApi.ts";
+import {KoboPermissionType} from "./Permission.model.ts";
 
 
 export const permissionApiSlice = baseApi.injectEndpoints({
@@ -7,6 +8,7 @@ export const permissionApiSlice = baseApi.injectEndpoints({
             query: () => {
                 return 'permissions/?format=json'
             },
+            transformResponse: (response: { results: KoboPermissionType[] }) => response.results
         }),
     })
 })
