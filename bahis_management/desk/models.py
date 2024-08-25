@@ -30,7 +30,7 @@ class Module(models.Model):
         help_text="The title of the module, this will be rendered in the BAHIS-desk app",
     )
     icon = models.CharField(
-        max_length=20,
+        max_length=50,
         blank=True,
         null=True,
         help_text="The icon to be used from the MUI icons set (https://mui.com/material-ui/material-icons)",
