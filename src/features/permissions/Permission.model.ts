@@ -21,7 +21,7 @@ export interface PermissionType {
     [PARTIAL_PERMIT]: PartialPermissionType[]
 }
 
-interface FilterType {
+export interface FilterType {
     _submitted_by: string
 }
 

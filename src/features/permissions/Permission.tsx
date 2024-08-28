@@ -20,7 +20,7 @@ export const Permission = ({userPermission, user}: PermissionProps) => {
                     user={user}
                     itemId={userPermission[permission].id}
                     label={userPermission[permission].label}
-                    key={userPermission[permission].permission}/>
+                    key={userPermission[permission].id}/>
             ))}
         </>
     );

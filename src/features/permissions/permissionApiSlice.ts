@@ -10,7 +10,14 @@ export const permissionApiSlice = baseApi.injectEndpoints({
             },
             transformResponse: (response: { results: KoboPermissionType[] }) => response.results
         }),
+        submitBulkPermission: build.mutation({
+            query: ({bulkPermission, formId}) => ({
+                url: `assets/${formId}/permission-assignments/bulk/`,
+                method: 'POST',
+                body: bulkPermission,
+            })
+        })
     })
 })
 
-export const {useGetPermissionsQuery} = permissionApiSlice
+export const {useGetPermissionsQuery, useSubmitBulkPermissionMutation} = permissionApiSlice

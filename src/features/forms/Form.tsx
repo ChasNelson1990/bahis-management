@@ -39,7 +39,7 @@ function Form() {
                     value={selectedFormId}
                     onChange={handleChange}
                 >
-                    {formList?.map((form, index) => (
+                    {formList?.map((form) => (
                         <MenuItem key={form.uid}
                                   value={form.uid}>{form.name}</MenuItem>
                     ))}

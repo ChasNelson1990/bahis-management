@@ -31,6 +31,7 @@ import {
 import Checkbox from "@mui/material/Checkbox";
 import {useGetUsersQuery} from "../users/userApiSlice.ts";
 import {Add} from "@mui/icons-material";
+import {useSubmitBulkPermissionMutation} from "./permissionApiSlice.ts";
 
 interface PermissionProps {
     formId: string
@@ -42,7 +43,8 @@ export const Permissions = (props: PermissionProps) => {
     const selectedPermit: [] = useSelector(selectedPermissionsIds);
     const localPermission: LocalPermissionType[] = useSelector(selectLocalPermissions);
     const permissionTreeData: PermissionTreeType = useSelector(selectPermissionTreeData);
-    const {data: userList, isLoading} = useGetUsersQuery(null)
+    const {data: userList} = useGetUsersQuery(null)
+    const [submitBulkPermission, {isLoading, isSuccess}] = useSubmitBulkPermissionMutation()
 
     const [selectedPermissions, setSelectedPermissions] = useState<Set<string>>(new Set())
     const [owner, setOwner] = useState<string>()
@@ -66,12 +68,12 @@ export const Permissions = (props: PermissionProps) => {
         dispatch(setPermissionTreeData(permissionTree))
         setSelectedPermissions(currentPermissions)
         setOwner(owner)
-    }, [forms, props.formId])
+    }, [dispatch, forms, localPermission, props.formId])
 
 
     useEffect(() => {
         dispatch(setSelectedPermissionsIds(Array.from(selectedPermissions)))
-    }, [selectedPermissions]);
+    }, [dispatch, selectedPermissions]);
 
     const handleChangePermission = (event: SyntheticEvent, itemId: string, isSelected: boolean) => {
         if (isSelected) {
@@ -89,7 +91,7 @@ export const Permissions = (props: PermissionProps) => {
         } else {
             // if item is user
             if (Object.keys(permissionTreeData).includes(itemId)) {
-                let itemsToRemove = [...Object.values(permissionTreeData[itemId]).map(permit => permit.id), itemId]
+                const itemsToRemove = [...Object.values(permissionTreeData[itemId]).map(permit => permit.id), itemId]
                 setSelectedPermissions(prev => new Set([...prev].filter(permit => !itemsToRemove.includes(permit))))
             } else {
                 setSelectedPermissions(prev => new Set([...prev].filter(permit => permit != itemId)))
@@ -99,16 +101,16 @@ export const Permissions = (props: PermissionProps) => {
     const handleChangeUser = (evt: SelectChangeEvent) => {
         setSelectedUser(evt.target.value);
     }
-    const handleAddUser = (event) => {
+    const handleAddUser = () => {
         if (selectedUser) {
             const blankPermission = getBlankPermission(selectedUser, localPermission)
             setSelectedUser('')
             dispatch(setPermissionTreeData({...blankPermission, ...permissionTreeData}))
         }
     }
-    const savePermission = (event) => {
+    const savePermission = () => {
         const bulkPermission = convertTreeToPermissions(permissionTreeData, selectedPermissions)
-        console.log(bulkPermission);
+        submitBulkPermission({bulkPermission, formId: props.formId})
     }
 
 
@@ -128,7 +130,8 @@ export const Permissions = (props: PermissionProps) => {
                     <FormControlLabel control={<Checkbox/>} label="Collapse All"/>
                 </div>
 
-                {isLoading ? 'Loading...' :
+                {
+                    isLoading ? 'Loading...' :
                     <Box display="flex" alignItems="center"
                          className={'my-5'}
                          gap={2}>
