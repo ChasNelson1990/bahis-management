@@ -9,11 +9,9 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import Logo from "../../assets/logo-white.png"
 import {Person as PersonIcon} from "@mui/icons-material";
-import {useState, MouseEvent} from "react";
-import {Link} from "@mui/material";
+import {MouseEvent, useState} from "react";
 
 
 const pages = ['Home',];
@@ -100,7 +98,7 @@ function Header() {
                             ))}
                         </Menu>
                     </Box>
-                    <AdbIcon sx={{display: {xs: 'flex', md: 'none'}, mr: 1}}/>
+                    <Box component='img' src={Logo} sx={{display: {xs: 'flex', md: 'none'}, mr: 1, height: '1.5rem'}}/>
                     <Typography
                         variant="h5"
                         noWrap
