@@ -1,16 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {UserType} from "./User.model.ts";
 
-export interface UserType {
-    id: number,
-    username: string,
-    is_superuser: boolean,
-    date_joined: string,
-    last_login: string,
-    is_active: boolean,
-    email: string,
-    asset_count: number,
-    metadata: object
-}
 
 export interface UserInitialState {
     users: UserType[],

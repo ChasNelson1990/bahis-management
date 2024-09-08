@@ -1,10 +1,13 @@
 import {
     BulkPermissionType,
+    FilterType,
     KoboPermissionType,
-    LocalPermissionType, PartialPermissionType,
+    LocalPermissionType,
+    PartialPermissionType,
     PermissionTreeType,
     PermissionType,
-    TreeNode
+    UserPermissionTreeType,
+    UserPermissionType
 } from "../features/permissions/Permission.model.ts";
 import {PARTIAL_PERMIT, PARTIAL_SUBMIT} from "../features/permissions/permissionSlice.ts";
 import {FormType} from "../features/forms/form.model.ts";
@@ -30,8 +33,49 @@ function makeUrl(word: string, prefix: string = '', suffix: string = ''): string
     return kfApiUrl + prefix + word + suffix;
 }
 
-function getPermissionTreePerUser(permissions, owner) {
-    const permissionTree: PermissionTreeType = {};
+
+function getUserPermission(
+    userName: string,
+    permissionName: string,
+    label: string,
+    type?: string,
+    isExist: boolean = false,
+    filters: { filters: FilterType[] } | undefined = (type === PARTIAL_PERMIT && userName ?
+        {filters: [{_submitted_by: userName}]} : undefined),
+    partial_permissions?: PartialPermissionType[],
+    isOwner: boolean = false,): UserPermissionType {
+
+    return {
+        id: userName ? userName.concat('.', permissionName) : permissionName,
+        permission: permissionName,
+        label,
+        isExist,
+        type,
+        partial_permissions,
+        ...filters,
+        isOwner
+    }
+
+}
+
+export function getPermissionsTree(localPermissions: LocalPermissionType[], user: string = '',): PermissionTreeType {
+    const permissionTreeItem: PermissionTreeType = {} as PermissionTreeType;
+
+    localPermissions?.map(({permission, label, type}) => {
+
+        permissionTreeItem[permission] = getUserPermission(user, permission, label, type);
+    })
+    return permissionTreeItem;
+}
+
+export function getBlankPermission(user: string, localPermissions: LocalPermissionType[]) {
+    const userPermissionTreeItem: UserPermissionTreeType = {[user]: {}};
+    userPermissionTreeItem[user] = getPermissionsTree(localPermissions, user)
+    return userPermissionTreeItem;
+}
+
+function getPermissionTreePerUser(permissions: PermissionType[], owner) {
+    const permissionTree: UserPermissionTreeType = {};
     const selectedPermissions: Set<string> = new Set()
     permissions?.forEach((permission: PermissionType) => {
         const userName = findWordAfter(permission.user, 'users')
@@ -43,35 +87,13 @@ function getPermissionTreePerUser(permissions, owner) {
         const label = (typeof permission.label === 'string') ? permission.label : permissionName
         const {partial_permissions} = permission
 
-        permissionTree[userName][permissionName] = {
-            id,
-            permission: permissionName,
-            label: label,
-            isExist: true,
-            partial_permissions,
-            isOwner: userName === owner
-        }
+        permissionTree[userName][permissionName] = getUserPermission(userName, permissionName, label, undefined, true, undefined, partial_permissions, userName === owner)
 
         selectedPermissions.add(id)
     })
     return {permissionTree, selectedPermissions};
 }
 
-export function getBlankPermission(user: string, localPermissions) {
-    const permissionTreeItem: PermissionTreeType = {[user]: {}};
-
-    localPermissions?.map(({permission, label, type}) => {
-        permissionTreeItem[user][permission] = {
-            id: user.concat('.', permission),
-            permission: permission,
-            label: label,
-            isExist: false,
-            type: type,
-            filters: [{_submitted_by: user}]
-        }
-    })
-    return permissionTreeItem;
-}
 
 export function getPermissionsExceptOwner(forms: FormType[], formId: string): PermissionType[] {
     const form = forms?.find(form => form.uid === formId)
@@ -80,7 +102,7 @@ export function getPermissionsExceptOwner(forms: FormType[], formId: string): Pe
 }
 
 export function getPermissionPerUser(permissions: PermissionType[], allPermissions?: KoboPermissionType[]): {
-    permissionTree: PermissionTreeType,
+    permissionTree: UserPermissionTreeType,
     currentPermissions: Set<string>
 } {
 
@@ -117,48 +139,30 @@ export function getLocalPermissionsPerUser(forms: FormType[], localPermissions: 
             const permissionName = getPermissionName(permit.url)
             const id = user.concat('.', permissionName)
 
-            permissionTree[user][permissionName] = {
-                id,
-                permission: permissionName,
-                label: '',
-                isExist: true,
-                type: PARTIAL_PERMIT,
-                filters: permit.filters,
-                isOwner: user === owner
-            }
+            permissionTree[user][permissionName] = getUserPermission(user,
+                permissionName, '', PARTIAL_PERMIT, true, {filters: permit.filters}, null, user === owner)
+
             selectedPermissions.add(id)
         })
 
         //update the label and add new that not selected
         localPermissions?.map(({permission, label}) => {
-
             if (!permissionTree[user][permission]) {
-                permissionTree[user][permission] = {
-                    id: user.concat('.', permission),
-                    permission: permission,
-                    label: label,
-                    isExist: false,
-                    type: PARTIAL_PERMIT,
-                    isOwner: user === owner
-                }
+
+                permissionTree[user][permission] = getUserPermission(user, permission, label,
+                    PARTIAL_PERMIT, false, undefined, undefined, user === owner)
+
             } else {
                 permissionTree[user][permission].label = label
             }
 
         })
     })
-
     return {permissionTree, currentPermissions: selectedPermissions, owner};
 }
 
-export function convertPermissionsToTreeData(): TreeNode[] {
-    return [{
-        id: 'abc',
-        label: 'ABC'
-    }]
-}
 
-export function convertTreeToPermissions(treeData: PermissionTreeType, selectedPermissions: Set<string>): BulkPermissionType[] {
+export function convertTreeToPermissions(treeData: UserPermissionTreeType, selectedPermissions: Set<string>): BulkPermissionType[] {
     const bulkPermission: BulkPermissionType[] = []
     Object.keys(treeData).map(user => {
         const partialPermit: PartialPermissionType[] = []

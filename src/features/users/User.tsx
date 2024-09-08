@@ -2,7 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import {useGetUsersQuery} from "./userApiSlice.ts";
 import {useDispatch} from "react-redux";
-import {setUsers, UserType} from "./userSlice.ts";
+import {setUsers} from "./userSlice.ts";
+import {UserType} from "./User.model.ts";
+
 
 
 function User() {
@@ -10,13 +12,13 @@ function User() {
     const dispatch = useDispatch()
 
 
-    const {data: userList} = useGetUsersQuery(null)
+    const {data: userList} = useGetUsersQuery()
 
 
     useEffect(() => {
         // console.log("dispatch user");
         dispatch(setUsers(userList))
-    }, [userList])
+    }, [dispatch, userList])
 
 
     const handleChange = (evt: SelectChangeEvent) => {

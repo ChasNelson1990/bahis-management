@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "declaration": false,
+//    "declaration": false,
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "skipLibCheck": true,

@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {LocalPermissionType, PermissionTreeType} from "./Permission.model.ts";
+import {LocalPermissionType, UserPermissionTreeType} from "./Permission.model.ts";
 
 export const PARTIAL_PERMIT = "partial_permissions"
 export const PARTIAL_SUBMIT = "partial_submissions"
@@ -43,7 +43,7 @@ export const PERMISSIONS = [
 interface PermissionInitialState {
     selectedPermissionsIds: []
     localPermissions: LocalPermissionType[],
-    permissionTreeData: PermissionTreeType
+    permissionTreeData: UserPermissionTreeType
 }
 
 const initialState: PermissionInitialState = {

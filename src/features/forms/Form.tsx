@@ -4,7 +4,6 @@ import {useGetFormsQuery} from "./formApiSlice.ts";
 import {Permissions} from "../permissions/Permissions.tsx";
 import {setForms} from "./formSlice.ts";
 import {useDispatch} from "react-redux";
-import User from "../users/User.tsx";
 import {FormType} from "./form.model.ts";
 
 
@@ -30,7 +29,7 @@ function Form() {
     }
 
     return (
-        <div>
+        <div className='m-5 md:m-24 lg:m-28 mt-5'>
             <FormControl fullWidth>
                 <InputLabel id="form-list-label">Form List</InputLabel>
                 <Select

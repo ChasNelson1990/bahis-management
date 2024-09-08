@@ -1,17 +1,17 @@
 import type {Action, Reducer, ThunkAction} from "@reduxjs/toolkit"
 import {combineSlices, configureStore} from "@reduxjs/toolkit"
 import {setupListeners} from "@reduxjs/toolkit/query"
-import {counterSlice} from "../features/counter/counterSlice"
-import {quotesApiSlice} from "../features/quotes/quotesApiSlice"
 import {permissionApiSlice} from "../features/permissions/permissionApiSlice.ts";
 import {formApiSlice} from "../features/forms/formApiSlice.ts";
 import {formSlice} from "../features/forms/formSlice.ts";
 import {permissionSlice} from "../features/permissions/permissionSlice.ts";
+import {userSlice} from "../features/users/userSlice.ts";
+import {userApiSlice} from "../features/users/userApiSlice.ts";
 
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
-const rootReducer: Reducer = combineSlices(counterSlice, quotesApiSlice, permissionApiSlice, formSlice, formApiSlice, permissionSlice)
+const rootReducer: Reducer = combineSlices(permissionApiSlice, formSlice, formApiSlice, permissionSlice, userApiSlice, userSlice);
 // Infer the `RootState` type from the root reducers
 export type RootState = ReturnType<typeof rootReducer>
 
@@ -24,9 +24,9 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
         // and other useful features of `rtk-query`.
         middleware: getDefaultMiddleware => {
             return getDefaultMiddleware().concat(
-                quotesApiSlice.middleware,
                 permissionApiSlice.middleware,
                 formApiSlice.middleware,
+                userApiSlice.middleware,
             )
         },
         preloadedState,

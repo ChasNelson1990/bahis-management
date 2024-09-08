@@ -21,11 +21,15 @@ export interface PermissionType {
     [PARTIAL_PERMIT]: PartialPermissionType[]
 }
 
-export interface FilterType {
-    _submitted_by: string
+export interface FilterMultiUser {
+    $in: string[]
 }
 
-export interface UserPermission {
+export interface FilterType {
+    _submitted_by: string | FilterMultiUser
+}
+
+export interface UserPermissionType {
     id: string
     permission: string,
     label: string,
@@ -37,7 +41,11 @@ export interface UserPermission {
 }
 
 export interface PermissionTreeType {
-    [key: string]: { [key: string]: UserPermission }
+    [key: string]: UserPermissionType
+}
+
+export interface UserPermissionTreeType {
+    [key: string]: PermissionTreeType
 }
 
 export interface TreeNode {

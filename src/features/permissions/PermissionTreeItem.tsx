@@ -14,14 +14,15 @@ import {
 } from '@mui/x-tree-view/TreeItem2';
 import {TreeItem2Icon} from '@mui/x-tree-view/TreeItem2Icon';
 import {TreeItem2Provider} from '@mui/x-tree-view/TreeItem2Provider';
-import {FilterType, PermissionTreeType, UserPermission} from "./Permission.model.ts";
+import {FilterMultiUser, FilterType, UserPermissionTreeType, UserPermissionType} from "./Permission.model.ts";
 import {Autocomplete, Stack} from "@mui/material";
 import {PARTIAL_PERMIT, selectPermissionTreeData, setPermissionTreeData} from "./permissionSlice.ts";
 import TextField from "@mui/material/TextField";
 import {useGetUsersQuery} from "../users/userApiSlice.ts";
-import {UserType} from "../users/userSlice.ts";
+import {UserType} from "../users/User.model.ts";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
+import user from "../users/User.tsx";
 
 const PermissionTreeItemContent = styled(TreeItem2Content)(({theme}) => ({
     padding: theme.spacing(1, 1),
@@ -34,8 +35,9 @@ const PermissionTreeItemContent = styled(TreeItem2Content)(({theme}) => ({
 interface PermissionTreeItemProps
     extends Omit<UseTreeItem2Parameters, 'rootRef'>,
         Omit<React.HTMLAttributes<HTMLLIElement>, 'onFocus'> {
-    permitData: UserPermission,
-    user: string
+    permitData: UserPermissionType,
+    user: string,
+    formOwner?: string
 }
 
 export const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(
@@ -43,7 +45,7 @@ export const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(
     ref: React.Ref<HTMLLIElement>,
 ) {
 
-    const {id, itemId, label, disabled, children, permitData, user: currentUser, ...other} = props;
+    const {id, itemId, label, disabled, children, permitData, user: currentUser, formOwner, ...other} = props;
     const {
         getRootProps,
         getContentProps,
@@ -56,36 +58,56 @@ export const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(
 
     const {data: userList} = useGetUsersQuery(null)
 
-    const [userValues, setUserValues] = useState<UserType[]>([])
+    const [userValues, setUserValues] = useState<string[]>([])
     const [owner, setOwner] = useState<UserType>({} as UserType)
-    const permissionTreeData: PermissionTreeType = useSelector(selectPermissionTreeData);
+    const [otherUsers, setOtherUsers] = useState<string[]>([])
+    const permissionTreeData: UserPermissionTreeType = useSelector(selectPermissionTreeData);
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const defaultUserValue = new Set<UserType>(userList?.filter(user => permitData.filters?.map(s => s._submitted_by).includes(user.username)))
+        const submittedBy: string | FilterMultiUser = permitData.filters?.filter(fltr => fltr._submitted_by)[0]._submitted_by
+
+        let defaultUserValue: Set<string> = new Set<string>([]);
+        if (typeof submittedBy === 'string') {
+            defaultUserValue = new Set<string>([submittedBy])
+        } else {
+            if (submittedBy && Object.prototype.hasOwnProperty.call(submittedBy, '$in')) {
+                defaultUserValue = new Set<string>(submittedBy.$in)
+            }
+        }
+
         const own = userList?.find(user => user.username === currentUser) as UserType;
         if (own) {
-            defaultUserValue.add(own)
+            defaultUserValue.add(own.username)
         }
         setOwner(own)
         setUserValues([...defaultUserValue])
+        setOtherUsers(getUsers())
+
     }, [permitData.filters, props.user, userList]);
 
+
+    const getUsers = () => {
+        return userList?.filter(user => user?.username !== formOwner && user.id > 0).map(user => user.username) || []
+    }
     const changeUserValue = (event, newValue) => {
         const newUsers = [
-            owner,
-            ...newValue.filter(option => option.username !== owner.username),
+            owner.username,
+            ...newValue.filter(option => option !== owner.username),
         ]
         setUserValues(newUsers);
 
         if (!getCheckboxProps().checked) return;
 
-        const permissionData: UserPermission = permissionTreeData[currentUser][permitData.permission];
+        const permissionData: UserPermissionType = permissionTreeData[currentUser][permitData.permission];
+        let filters: FilterType[]
+        if (newUsers.length > 1) {
+            filters = [{_submitted_by: {$in: newUsers}}]
+        } else {
+            filters = [{_submitted_by: newUsers[0]}]
 
-        const filters: FilterType[] = newUsers.map(user => {
-            return {_submitted_by: user.username}
-        })
+        }
 
         dispatch(setPermissionTreeData({
             ...permissionTreeData,
@@ -115,9 +137,8 @@ export const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(
                                 multiple
                                 size={'small'}
                                 value={userValues}
-                                options={userList || []}
+                                options={otherUsers}
                                 disabled={!getCheckboxProps().checked}
-                                getOptionLabel={(option) => option.username}
                                 onChange={changeUserValue}
                                 renderInput={(params) => (
                                     <TextField
