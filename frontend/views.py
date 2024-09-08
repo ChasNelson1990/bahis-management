@@ -12,5 +12,5 @@ def permissions(request):
         token = Token.objects.get(user=user)
         return render(request, "frontend/index.html", {"token": token})
     else:
-        messages.add_message(request, messages.INFO, "You arw not a Admin. You are a regular user!")
+        messages.add_message(request, messages.INFO, "You are not a Admin. You are a regular user!")
         return redirect(to="home")

@@ -2,7 +2,7 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 
 export const baseApi = createApi({
     baseQuery: fetchBaseQuery({
-            baseUrl: "/api/v2/",
+            baseUrl: import.meta.env.VITE_KF_API_URL,
             credentials: "include",
             prepareHeaders: (headers) => {
                 const token = localStorage.getItem('token');
