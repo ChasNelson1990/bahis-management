@@ -16,17 +16,17 @@ SECRET_KEY = env(
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost", "0.0.0.0", "127.0.0.1"])
 
 # https://stackoverflow.com/questions/70612439/csrf-failed-origin-checking-failed-http-localhost8000-does-not-match-any
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3001"]
+CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS")
 
 # CACHES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#caches
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "",
-    }
-}
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+#         "LOCATION": "",
+#     }
+# }
 
 # WhiteNoise
 # ------------------------------------------------------------------------------
@@ -69,3 +69,25 @@ INSTALLED_APPS += ["django_extensions"]  # noqa: F405
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+SESSION_ENGINE = 'redis_sessions.session'
+# django-redis-session expects a dictionary with `url`
+redis_session_url = env.cache_url(
+    'REDIS_SESSION_URL', default='redis://redis_cache:6380/2'
+)
+SESSION_REDIS = {
+    'url': redis_session_url['LOCATION'],
+    'prefix': env.str('REDIS_SESSION_PREFIX', 'session'),
+    'socket_timeout': env.int('REDIS_SESSION_SOCKET_TIMEOUT', 1),
+}
+
+CACHES = {
+    # Set CACHE_URL to override
+    'default': env.cache_url(default='redis://redis_cache:6380/3'),
+    'enketo_redis_main': env.cache_url(
+        'ENKETO_REDIS_MAIN_URL', default='redis://change-me.invalid/0'
+    ),
+}
+
+SESSION_COOKIE_NAME = env.str('SESSION_COOKIE_NAME')
+SESSION_COOKIE_DOMAIN = env.str('SESSION_COOKIE_DOMAIN')
