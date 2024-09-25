@@ -1,14 +1,15 @@
-import random
-import string
 import base64
 import hashlib
+import random
+import string
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
-from requests_oauthlib import OAuth2Session
-from django.conf import settings
 from django.shortcuts import render, redirect
+from requests_oauthlib import OAuth2Session
 
+from config.settings.base import env
 
 oauth = settings.AUTHLIB_OAUTH_CLIENTS["bahis_oidc"]
 scope = ["openid", "email", "profile", "introspection"]
@@ -27,7 +28,9 @@ code_challenge = base64.urlsafe_b64encode(code_challenge).decode("utf-8").replac
 @login_required()
 def home(request):
     user = request.user
-    return render(request, "portal/home.html", context={"user": user})
+    kobo_url = env("KOBOTOOLBOX_URL")
+
+    return render(request, "portal/home.html", context={"user": user, "kobo_url": kobo_url})
 
 
 def login(request):
