@@ -282,3 +282,5 @@ vendors.js
 .envs/*
 !.envs/.local/
 .idea
+.vite
+/frontend/static/

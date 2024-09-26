@@ -34,4 +34,4 @@ class WorkflowViewSet(viewsets.ModelViewSet):
 
     queryset = Workflow.objects.all().order_by("id")
     serializer_class = WorkflowSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]  # [permissions.IsAuthenticated] FIXME auth is turned off
