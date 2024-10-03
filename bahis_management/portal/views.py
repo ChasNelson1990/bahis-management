@@ -29,8 +29,8 @@ code_challenge = base64.urlsafe_b64encode(code_challenge).decode("utf-8").replac
 def home(request):
     user = request.user
     kobo_url = env("KOBOTOOLBOX_URL")
-
-    return render(request, "portal/home.html", context={"user": user, "kobo_url": kobo_url})
+    dash_url = env("BAHIS_DASHBOARD_URL")
+    return render(request, "portal/home.html", context={"user": user, "kobo_url": kobo_url, "dash_url": dash_url})
 
 
 def login(request):
