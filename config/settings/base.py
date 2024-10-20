@@ -64,6 +64,9 @@ DATABASES = {
         "USER": env("KOBO_USER"),
         "PASSWORD": env("KOBO_PASSWORD"),
         "ATOMIC_REQUESTS": True,
+        'OPTIONS': {
+            'options': '-c search_path=management,public'
+        }
     }
 }
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
