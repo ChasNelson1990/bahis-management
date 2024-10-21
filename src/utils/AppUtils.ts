@@ -6,7 +6,6 @@ export function getCookie(name: string) {
             const cookie = cookies[i].trim();
             if (cookie.startsWith(name + '=')) {
                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                console.log(cookieValue);
                 break;
             }
         }

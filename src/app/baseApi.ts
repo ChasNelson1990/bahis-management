@@ -6,7 +6,7 @@ const getCsrfToken = () => getCookie('csrftoken');
 export const baseApi = createApi({
     baseQuery: fetchBaseQuery({
             baseUrl: import.meta.env.VITE_KF_API_URL,
-            credentials: "include",
+            // credentials: "include",
             prepareHeaders: (headers) => {
                 const token = localStorage.getItem('token');
                 const csrfToken = getCsrfToken();

@@ -67,8 +67,6 @@ TEMPLATES[0]["OPTIONS"]["debug"] = True  # type: ignore # noqa: F405
 # https://django-extensions.readthedocs.io/en/latest/installation_instructions.html#configuration
 INSTALLED_APPS += ["django_extensions"]  # noqa: F405
 
-# Your stuff...
-# ------------------------------------------------------------------------------
 
 SESSION_ENGINE = 'redis_sessions.session'
 # django-redis-session expects a dictionary with `url`
