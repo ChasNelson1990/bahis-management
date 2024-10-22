@@ -1,6 +1,6 @@
+from django import forms
 from django.contrib import admin
-from django.contrib.auth.admin import GroupAdmin
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import User, Group
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
@@ -8,8 +8,31 @@ from bahis_management.desk.models import Module
 from users.models import Profile
 
 
+class GroupForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'instance' in kwargs and kwargs['instance']:
+            # Pre-populate the users field with existing users in the group
+            self.fields['users'].initial = kwargs['instance'].user_set.all()
+
+    users = forms.ModelMultipleChoiceField(
+        queryset=User.objects.all(),
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'user-checkboxes'}),
+        required=False,
+        label="Select Users"
+    )
+
+    class Meta:
+        model = Group
+        fields = ['name', 'users']  # Include the fields you want to display
+
+
 class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'get_groups')
+    list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
+    list_per_page = 30
+    search_fields = ('username', 'email', 'first_name', 'last_name')
 
     def get_groups(self, obj):
         return ", ".join([g.name for g in obj.groups.all()])
@@ -17,7 +40,8 @@ class UserAdmin(admin.ModelAdmin):
     get_groups.short_description = 'Groups'  # Label for the 'Groups' column
 
 
-class CustomGroupAdmin(GroupAdmin):
+class GroupAdmin(admin.ModelAdmin):
+    form = GroupForm
     list_display = ('name', 'get_users')
 
     def get_users(self, obj):
@@ -54,18 +78,23 @@ class CustomGroupAdmin(GroupAdmin):
 
     get_users.short_description = 'Users'
 
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        if form.cleaned_data.get('users'):
+            obj.user_set.set(form.cleaned_data['users'])  # Assign selected users to the group
+
     class Media:
         css = {
             'all': ('css/my_admin.css',)
         }
+        js = ('js/my_admin.js',)
 
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
 admin.site.unregister(Group)
-admin.site.register(Group, CustomGroupAdmin)
+admin.site.register(Group, GroupAdmin)
 
-# Register your models here.
 admin.site.register(Module)
 admin.site.register(Profile)
