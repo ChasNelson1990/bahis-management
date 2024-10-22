@@ -1,0 +1,26 @@
+.user-list {
+    margin-top: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.user-item {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.user-item a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.user-item a:hover {
+    text-decoration: underline;
+}
+
+#searchUser {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
