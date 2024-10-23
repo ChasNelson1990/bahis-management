@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -18,31 +19,23 @@ class GroupForm(forms.ModelForm):
 
     users = forms.ModelMultipleChoiceField(
         queryset=User.objects.all(),
-        widget=forms.CheckboxSelectMultiple(attrs={'class': 'user-checkboxes'}),
+        widget=admin.widgets.FilteredSelectMultiple(verbose_name='Users', is_stacked=False),
         required=False,
-        label="Select Users"
     )
 
     class Meta:
         model = Group
-        fields = ['name', 'users']  # Include the fields you want to display
+        fields = ['name', 'permissions', 'users', ]
+        # fields = '__all__'
 
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'get_groups')
-    list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
-    list_per_page = 30
-    search_fields = ('username', 'email', 'first_name', 'last_name')
-
-    def get_groups(self, obj):
-        return ", ".join([g.name for g in obj.groups.all()])
-
-    get_groups.short_description = 'Groups'  # Label for the 'Groups' column
-
-
-class GroupAdmin(admin.ModelAdmin):
+class ExtendGroupAdmin(GroupAdmin):
     form = GroupForm
-    list_display = ('name', 'get_users')
+
+    search_fields = ("name",)
+    ordering = ("name",)
+    filter_horizontal = ("permissions",)
+    list_display = ('name', 'get_users',)
 
     def get_users(self, obj):
         users = obj.user_set.all()
@@ -90,11 +83,23 @@ class GroupAdmin(admin.ModelAdmin):
         js = ('js/my_admin.js',)
 
 
+class ExtendUserAdmin(UserAdmin):
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'get_groups')
+    list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
+    list_per_page = 30
+    search_fields = ('username', 'email', 'first_name', 'last_name')
+
+    def get_groups(self, obj):
+        return ", ".join([g.name for g in obj.groups.all()])
+
+    get_groups.short_description = 'Groups'  # Label for the 'Groups' column
+
+
 admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+admin.site.register(User, ExtendUserAdmin)
 
 admin.site.unregister(Group)
-admin.site.register(Group, GroupAdmin)
+admin.site.register(Group, ExtendGroupAdmin)
 
 admin.site.register(Module)
 admin.site.register(Profile)
