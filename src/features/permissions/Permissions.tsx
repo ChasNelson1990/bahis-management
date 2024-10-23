@@ -325,7 +325,7 @@ export const Permissions = (props: PermissionProps) => {
                             clearOnEscape
                             options={userList || []}
                             getOptionLabel={(option) => option.username}
-                            loading={true}
+                            loading={false}
                             value={userList?.find(user => user.username === selectedUser) || null}
                             getOptionDisabled={user => !(user.id !== -1 && !Object.keys(permissionTreeData).includes(user.username))}
                             onChange={handleChangeUser}
