@@ -56,7 +56,7 @@ export const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(
         status,
     } = useTreeItem2({id, itemId, children, label, disabled, rootRef: ref});
 
-    const {data: userList} = useGetUsersQuery(null)
+    const {data: userList} = useGetUsersQuery()
 
     const [userValues, setUserValues] = useState<string[]>([])
     const [owner, setOwner] = useState<UserType>({} as UserType)

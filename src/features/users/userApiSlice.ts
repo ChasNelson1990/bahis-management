@@ -5,7 +5,7 @@ import {GroupType, UserType} from "./User.model.ts";
 export const userApiSlice = baseApi.injectEndpoints({
     endpoints: build => ({
         getUsers: build.query<UserType[], void>({
-            query: () => `users/`,
+            query: () => `users/?limit=10000&offset=0`,
             transformResponse: (response: { results: UserType[] }) => response.results
         }),
         getUsersByGroup: build.query<UserType[], string>({
