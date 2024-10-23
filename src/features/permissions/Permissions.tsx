@@ -41,6 +41,7 @@ import {
 import {useSubmitBulkPermissionMutation} from "./permissionApiSlice.ts";
 import TextField from "@mui/material/TextField";
 import {UserItem} from "./UserItem.tsx";
+import {UserType} from "../users/User.model.ts";
 
 interface PermissionProps {
     formId: string
@@ -186,8 +187,10 @@ export const Permissions = (props: PermissionProps) => {
     const handleExpandedItemsChange = (event: React.SyntheticEvent, itemIds: string[],) => {
         setExpandedItems(itemIds)
     }
-    const handleChangeUser = (evt: SelectChangeEvent) => {
-        setSelectedUser(evt.target.value);
+    const handleChangeUser = (_evt, newUser: UserType) => {
+        if (newUser) {
+            setSelectedUser(newUser.username);
+        }
     }
     const handleAddUser = () => {
         if (selectedUser) {
@@ -317,19 +320,27 @@ export const Permissions = (props: PermissionProps) => {
 
                     </Box>
                     <Box display="flex" flexDirection='column' gap={1} width='100%'>
-                        <FormControl fullWidth size='small'>
-                            <InputLabel id="user-list-label">User List</InputLabel>
-                            <Select
-                                labelId="user-list-label"
-                                label="User List"
-                                value={selectedUser}
-                                onChange={handleChangeUser}>
-                                {userList?.map((user) => (
-                                    (user.id !== -1 && !Object.keys(permissionTreeData).includes(user.username)) &&
-                                    <MenuItem key={user.id} value={user.username}>{user.username}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+
+                        <Autocomplete
+                            clearOnEscape
+                            options={userList || []}
+                            getOptionLabel={(option) => option.username}
+                            loading={true}
+                            value={userList?.find(user => user.username === selectedUser) || null}
+                            getOptionDisabled={user => !(user.id !== -1 && !Object.keys(permissionTreeData).includes(user.username))}
+                            onChange={handleChangeUser}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="User List"
+                                    variant="outlined"
+                                    size="small"
+                                    fullWidth
+                                />
+                            )}
+                            isOptionEqualToValue={(option, value) => option.username === value.username}
+                        />
+
                         <Box display="flex" width='100%' justifyContent="space-between">
                             <Button variant='contained'
                                     onClick={handleAddUser}
