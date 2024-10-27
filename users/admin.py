@@ -95,6 +95,12 @@ class ExtendUserAdmin(UserAdmin):
     get_groups.short_description = 'Groups'  # Label for the 'Groups' column
 
 
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ['upazila_code', 'upazila_name', 'user', 'user_id']
+    search_fields = ['upazila_code', 'upazila_name', 'user__id', 'user__username', ]
+    ordering = ['upazila_code']
+
+
 admin.site.unregister(User)
 admin.site.register(User, ExtendUserAdmin)
 
@@ -102,4 +108,4 @@ admin.site.unregister(Group)
 admin.site.register(Group, ExtendGroupAdmin)
 
 admin.site.register(Module)
-admin.site.register(Profile)
+admin.site.register(Profile, ProfileAdmin)
