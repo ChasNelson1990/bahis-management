@@ -9,7 +9,7 @@ export const userApiSlice = baseApi.injectEndpoints({
             transformResponse: (response: { results: UserType[] }) => response.results
         }),
         getUsersByGroup: build.query<UserType[], string>({
-            query: (groupName) => `utils/groups/${groupName}/users/`,
+            query: (groupName) => `utils/groups/${groupName}/users/?limit=10000&offset=0`,
             transformResponse: (response: { results: UserType[] }) => response.results
         }),
         getGroups: build.query<GroupType[], void>({
