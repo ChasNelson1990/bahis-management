@@ -19,6 +19,8 @@ import {
     MenuItem,
     Select,
     SelectChangeEvent,
+    Snackbar,
+    SnackbarCloseReason,
     Typography
 } from "@mui/material";
 import {SimpleTreeView, TreeItem2, useTreeViewApiRef} from "@mui/x-tree-view";
@@ -39,6 +41,7 @@ import {
 import {useSubmitBulkPermissionMutation} from "./permissionApiSlice.ts";
 import TextField from "@mui/material/TextField";
 import {UserItem} from "./UserItem.tsx";
+import {UserType} from "../users/User.model.ts";
 
 interface PermissionProps {
     formId: string
@@ -58,12 +61,19 @@ export const Permissions = (props: PermissionProps) => {
     const [selectedUser, setSelectedUser] = useState('')
     const [selectedGroup, setSelectedGroup] = useState('')
     const [expandedItems, setExpandedItems] = useState([])
+    const [toastOpen, setToastOpen] = React.useState(false);
+    const [toastMessage, setToastMessage] = React.useState('');
 
     const {data: userList} = useGetUsersQuery()
     const {data: groupList} = useGetGroupsQuery()
     const {data: groupUserList} = useGetUsersByGroupQuery(selectedGroup, {skip: selectedGroup === ''})
 
-    const [submitBulkPermission, {isLoading}] = useSubmitBulkPermissionMutation()
+
+    const [submitBulkPermission, {
+        isError: isSaveError,
+        isSuccess: isSaveSuccess,
+        error: saveError
+    }] = useSubmitBulkPermissionMutation()
 
     const dispatch = useDispatch()
 
@@ -82,6 +92,20 @@ export const Permissions = (props: PermissionProps) => {
     useEffect(() => {
         dispatch(setSelectedPermissionsIds(Array.from(selectedPermissions)))
     }, [dispatch, selectedPermissions])
+
+    useEffect(() => {
+        if (isSaveError) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            setToastMessage(`Failed!! Error: ${saveError?.error}`)
+            setToastOpen(true)
+
+        }
+        if (isSaveSuccess) {
+            setToastMessage("Successfully Saved")
+            setToastOpen(true)
+        }
+    }, [isSaveSuccess, isSaveError]);
 
 
     const addBlankUser = (userList: string[]) => {
@@ -163,8 +187,10 @@ export const Permissions = (props: PermissionProps) => {
     const handleExpandedItemsChange = (event: React.SyntheticEvent, itemIds: string[],) => {
         setExpandedItems(itemIds)
     }
-    const handleChangeUser = (evt: SelectChangeEvent) => {
-        setSelectedUser(evt.target.value);
+    const handleChangeUser = (_evt, newUser: UserType) => {
+        if (newUser) {
+            setSelectedUser(newUser.username);
+        }
     }
     const handleAddUser = () => {
         if (selectedUser) {
@@ -214,6 +240,24 @@ export const Permissions = (props: PermissionProps) => {
         treeRef.current?.focusItem(evt, newValue);
         setExpandedItems(prev => ([...prev, newValue]))
     }
+    const handleToastClose = (
+        event: React.SyntheticEvent | Event,
+        reason?: SnackbarCloseReason,
+    ) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setToastOpen(false);
+    };
+
+    const SaveComp = () => {
+        return (
+            <div className={"mb-5 self-end"}>
+                <Button color='success' onClick={handleSavePermission} variant="contained">Save</Button>
+            </div>
+        )
+    }
 
     return (
         <div>
@@ -237,76 +281,83 @@ export const Permissions = (props: PermissionProps) => {
                     </SimpleTreeView>
                 </Box>
 
-                {
-                    isLoading ? 'Loading...' :
-                        <Box display="flex"
-                             alignItems="center"
-                             className={'my-5'}
-                             gap={2}>
-                            <Box display="flex" flexDirection='column' gap={1} width='100%'>
-                                <FormControl fullWidth size='small'>
-                                    <InputLabel id="group-list-label">Group List</InputLabel>
-                                    <Select
-                                        labelId="group-list-label"
-                                        label="Group List"
-                                        value={selectedGroup}
-                                        onChange={handleChangeGroup}>
-                                        {groupList?.map((group) => (
-                                            (group.id !== -1 && !Object.keys(permissionTreeData).includes(group.name)) &&
-                                            <MenuItem key={group.id}
-                                                      value={group.name}>{group.name}</MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
 
-                                <Box display="flex" width='100%' justifyContent="space-between">
-                                    <Button variant='contained'
-                                            onClick={handleAddGroup}
-                                            startIcon={<GroupAddIcon/>}
-                                            sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>
-                                        Add Group
-                                    </Button>
-                                    <Button variant='contained'
-                                            onClick={handleRemoveGroup}
-                                            startIcon={<GroupRemoveIcon/>}
-                                            sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>
-                                        Remove Group
-                                    </Button>
-                                </Box>
+                <Box display="flex"
+                     alignItems="center"
+                     className={'my-5'}
+                     gap={2}>
+                    <Box display="flex" flexDirection='column' gap={1} width='100%'>
+                        <FormControl fullWidth size='small'>
+                            <InputLabel id="group-list-label">Group List</InputLabel>
+                            <Select
+                                labelId="group-list-label"
+                                label="Group List"
+                                value={selectedGroup}
+                                onChange={handleChangeGroup}>
+                                {groupList?.map((group) => (
+                                    (group.id !== -1 && !Object.keys(permissionTreeData).includes(group.name)) &&
+                                    <MenuItem key={group.id}
+                                              value={group.name}>{group.name}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
 
-
-                            </Box>
-                            <Box display="flex" flexDirection='column' gap={1} width='100%'>
-                                <FormControl fullWidth size='small'>
-                                    <InputLabel id="user-list-label">User List</InputLabel>
-                                    <Select
-                                        labelId="user-list-label"
-                                        label="User List"
-                                        value={selectedUser}
-                                        onChange={handleChangeUser}>
-                                        {userList?.map((user) => (
-                                            (user.id !== -1 && !Object.keys(permissionTreeData).includes(user.username)) &&
-                                            <MenuItem key={user.id} value={user.username}>{user.username}</MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                                <Box display="flex" width='100%' justifyContent="space-between">
-                                    <Button variant='contained'
-                                            onClick={handleAddUser}
-                                            startIcon={<PersonAddIcon/>}
-                                            sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>
-                                        Add User
-                                    </Button>
-                                    {/*<Button variant='contained'*/}
-                                    {/*        onClick={handleRemoveUser}*/}
-                                    {/*        startIcon={<PersonRemoveIcon/>}*/}
-                                    {/*        sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>*/}
-                                    {/*    Remove User*/}
-                                    {/*</Button>*/}
-                                </Box>
-                            </Box>
+                        <Box display="flex" width='100%' justifyContent="space-between">
+                            <Button variant='contained'
+                                    onClick={handleAddGroup}
+                                    startIcon={<GroupAddIcon/>}
+                                    sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>
+                                Add Group
+                            </Button>
+                            <Button variant='contained'
+                                    onClick={handleRemoveGroup}
+                                    startIcon={<GroupRemoveIcon/>}
+                                    sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>
+                                Remove Group
+                            </Button>
                         </Box>
-                }
+
+
+                    </Box>
+                    <Box display="flex" flexDirection='column' gap={1} width='100%'>
+
+                        <Autocomplete
+                            clearOnEscape
+                            options={userList || []}
+                            getOptionLabel={(option) => option.username}
+                            loading={false}
+                            value={userList?.find(user => user.username === selectedUser) || null}
+                            getOptionDisabled={user => !(user.id !== -1 && !Object.keys(permissionTreeData).includes(user.username))}
+                            onChange={handleChangeUser}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="User List"
+                                    variant="outlined"
+                                    size="small"
+                                    fullWidth
+                                />
+                            )}
+                            isOptionEqualToValue={(option, value) => option.username === value.username}
+                        />
+
+                        <Box display="flex" width='100%' justifyContent="space-between">
+                            <Button variant='contained'
+                                    onClick={handleAddUser}
+                                    startIcon={<PersonAddIcon/>}
+                                    sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>
+                                Add User
+                            </Button>
+                            {/*<Button variant='contained'*/}
+                            {/*        onClick={handleRemoveUser}*/}
+                            {/*        startIcon={<PersonRemoveIcon/>}*/}
+                            {/*        sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>*/}
+                            {/*    Remove User*/}
+                            {/*</Button>*/}
+                        </Box>
+                    </Box>
+                </Box>
+
 
                 <Box>
                     <Box display='flex' justifyContent='space-between' py={2}>
@@ -327,9 +378,7 @@ export const Permissions = (props: PermissionProps) => {
 
                     </Box>
 
-                    <div className={"mb-5 self-end"}>
-                        <Button color='success' onClick={handleSavePermission} variant="contained">Save</Button>
-                    </div>
+                    <SaveComp/>
                     <SimpleTreeView
                         apiRef={treeRef}
                         expandedItems={[...expandedItems]}
@@ -353,12 +402,16 @@ export const Permissions = (props: PermissionProps) => {
 
                         ))}
                     </SimpleTreeView>
-                    <div className={"mt-5 self-end"}>
-                        <Button color='success' onClick={handleSavePermission} variant="contained">Save</Button>
-                    </div>
+                    <SaveComp/>
                 </Box>
 
             </div>
+            <Snackbar
+                open={toastOpen}
+                autoHideDuration={5000}
+                onClose={handleToastClose}
+                message={toastMessage}
+            />
         </div>
     )
 }

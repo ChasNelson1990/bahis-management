@@ -1,14 +1,19 @@
 {% load static %}
 <footer class="page-footer white black-text">
     <div class="container">
-        <div class="row">
+        <div class="row" style="display: flex; justify-content: space-between;">
             <div class="col s12 m7 footer-copyright white black-text ">
                 <p>Developed by the Department of Livestock Services (Bangladesh Government) with support from FAO
                     Bangladesh ECTAD 2024.</p>
             </div>
             <div class="col s12 m5 funders">
-                <p class="valign-wrapper right-align">With thanks to our funders&nbsp;
+                <p class="valign-wrapper">With thanks to our funders&nbsp;
                     <img src="{% static 'img/funders.png' %}" alt="funder logos"/>
+                </p>
+            </div>
+            <div class="col s12 m5 funders">
+                <p class="valign-wrapper right-align">Powered by Chameleon&nbsp;
+                    <img src="{% static 'img/chameleon_logo.png' %}" alt="logos"/>
                 </p>
             </div>
         </div>

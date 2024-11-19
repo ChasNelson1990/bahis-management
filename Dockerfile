@@ -1,9 +1,17 @@
+
+FROM node:22-bookworm AS react
+ARG APP_HOME=/app
+RUN mkdir -p ${APP_HOME}
+WORKDIR ${APP_HOME}
+COPY . ${APP_HOME}
+RUN npm install
+RUN npm run build:dev
+
 FROM python:3.11.7-slim-bookworm
 
 ARG BUILD_ENVIRONMENT=dev
 # ARG BUILD_ENVIRONMENT=production
 ARG APP_HOME=/app
-RUN mkdir -p ${APP_HOME}
 WORKDIR ${APP_HOME}
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -38,12 +46,14 @@ COPY ./start.sh /start.sh
 RUN sed -i 's/\r$//g' /start.sh
 RUN chmod +x /start.sh
 
-COPY . ${APP_HOME}
+COPY --from=react ${APP_HOME} ${APP_HOME}
 
 ENV DJANGO_READ_DOT_ENV_FILE=true
 
 RUN DATABASE_URL="" \
-  DJANGO_SETTINGS_MODULE="config.settings.test" \
+  DJANGO_SETTINGS_MODULE="config.settings.dev" \
   python manage.py compilemessages
+
+CMD python manage.py collectstatic --noinput
 
 ENTRYPOINT ["/entrypoint.sh"]

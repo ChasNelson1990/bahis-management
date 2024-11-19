@@ -14,7 +14,14 @@ import {Person as PersonIcon} from "@mui/icons-material";
 import {MouseEvent, useState} from "react";
 
 
-const pages = ['Home',];
+const kfUrl = new URL(import.meta.env.VITE_KF_API_URL);
+const kfAdminUrl = `${kfUrl.protocol}//${kfUrl.host}/admin`;
+
+const pages = [
+    {title: 'Home', link: '/'},
+    {title: 'Admin', link: '/admin'},
+    {title: 'Forms Admin', link: kfAdminUrl}
+];
 const settings = ['Logout'];
 
 function Header() {
@@ -92,8 +99,8 @@ function Header() {
                             sx={{display: {xs: 'block', md: 'none'}}}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography sx={{textAlign: 'center'}}>{page}</Typography>
+                                <MenuItem key={page.title} onClick={handleCloseNavMenu}>
+                                    <Typography sx={{textAlign: 'center'}}>{page.title}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -120,12 +127,12 @@ function Header() {
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                         {pages.map((page) => (
                             <Button
-                                key={page}
+                                key={page.title}
                                 onClick={handleCloseNavMenu}
                                 sx={{my: 2, color: 'white', display: 'block'}}
                             >
-                                <a href="/">
-                                    {page}
+                                <a href={page.link}>
+                                    {page.title}
                                 </a>
                             </Button>
                         ))}
