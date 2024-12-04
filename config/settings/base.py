@@ -47,15 +47,6 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    # "default": {
-    #     "ENGINE": "django.db.backends.postgresql",
-    #     "HOST": env("POSTGRES_HOST"),
-    #     "PORT": env("POSTGRES_PORT"),
-    #     "NAME": env("POSTGRES_DB"),
-    #     "USER": env("POSTGRES_USER"),
-    #     "PASSWORD": env("POSTGRES_PASSWORD"),
-    #     "ATOMIC_REQUESTS": True,
-    # },
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "HOST": env("KOBO_HOST"),

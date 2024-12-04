@@ -4,9 +4,9 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-if [ -z "${POSTGRES_USER}" ]; then
+if [ -z "${KOBO_USER}" ]; then
     base_postgres_image_default_user='postgres'
-    export POSTGRES_USER="${base_postgres_image_default_user}"
+    export KOBO_USER="${base_postgres_image_default_user}"
 fi
 
 python << END
@@ -21,11 +21,11 @@ start = time.time()
 while True:
     try:
         psycopg.connect(
-            dbname="${POSTGRES_DB}",
-            user="${POSTGRES_USER}",
-            password="${POSTGRES_PASSWORD}",
-            host="${POSTGRES_HOST}",
-            port="${POSTGRES_PORT}",
+            dbname="${KOBO_DB}",
+            user="${KOBO_USER}",
+            password="${KOBO_PASSWORD}",
+            host="${KOBO_HOST}",
+            port="${KOBO_PORT}",
         )
         break
     except psycopg.OperationalError as error:
