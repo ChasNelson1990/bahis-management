@@ -5,6 +5,8 @@ import {Permissions} from "../permissions/Permissions.tsx";
 import {setForms} from "./formSlice.ts";
 import {useDispatch} from "react-redux";
 import {FormType} from "./form.model.ts";
+import ScrollToTopButton from './ScrollToTopButton.tsx';
+
 
 
 function Form() {
@@ -45,6 +47,7 @@ function Form() {
                 </Select>
             </FormControl>
             <Permissions formId={selectedFormId}/>
+            <ScrollToTopButton />
         </div>
     );
 }
