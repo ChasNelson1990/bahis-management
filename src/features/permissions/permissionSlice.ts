@@ -3,6 +3,7 @@ import {LocalPermissionType, UserPermissionTreeType} from "./Permission.model.ts
 
 export const PARTIAL_PERMIT = "partial_permissions"
 export const PARTIAL_SUBMIT = "partial_submissions"
+export const ADD_SUBMISSION = "add_submissions"
 export const PERMISSIONS = [
     {
         "permission": "view_asset",
@@ -10,7 +11,7 @@ export const PERMISSIONS = [
         muiIcon: '',
     },
     {
-        "permission": "add_submissions",
+        "permission": ADD_SUBMISSION,
         "label": "Add submissions",
         muiIcon: '',
     },

@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import {useGetFormsQuery} from "./formApiSlice.ts";
 import {Permissions} from "../permissions/Permissions.tsx";
@@ -21,7 +21,6 @@ function Form() {
 
     useEffect(() => {
         dispatch(setForms(formList))
-        formList && setSelectedFormId(formList[0]?.uid)
     }, [formList])
 
     const handleChange = (evt: SelectChangeEvent) => {
@@ -29,7 +28,8 @@ function Form() {
     }
 
     return (
-        <div className='m-5 md:m-24 lg:m-28 mt-5'>
+        <div className='m-2 md:mx-8 lg:m-12 mt-2'>
+            <div className='my-3 text-xl'>Select Form</div>
             <FormControl fullWidth>
                 <InputLabel id="form-list-label">Form List</InputLabel>
                 <Select

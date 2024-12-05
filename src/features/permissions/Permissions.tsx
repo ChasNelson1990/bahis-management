@@ -17,6 +17,7 @@ import {
     FormControl,
     InputLabel,
     MenuItem,
+    Paper,
     Select,
     SelectChangeEvent,
     Snackbar,
@@ -49,6 +50,7 @@ interface PermissionProps {
 
 
 export const Permissions = (props: PermissionProps) => {
+    const TEM_PERMISSION_ID = "tmpPermissions";
     const forms: FormType[] = useSelector(selectForms);
     const selectedPermit: [] = useSelector(selectedPermissionsIds);
     const localPermission: LocalPermissionType[] = useSelector(selectLocalPermissions);
@@ -76,7 +78,6 @@ export const Permissions = (props: PermissionProps) => {
     }] = useSubmitBulkPermissionMutation()
 
     const dispatch = useDispatch()
-
 
     useEffect(() => {
         const {
@@ -114,7 +115,9 @@ export const Permissions = (props: PermissionProps) => {
         userList.map(user => {
             const perm = []
             selectedGroupPermissions.forEach(permission => {
-                perm.push(`${user}.${permission}`)
+                if (permission != TEM_PERMISSION_ID) {
+                    perm.push(`${user}.${permission}`)
+                }
             })
             setSelectedPermissions(prev => {
                 return new Set<string>([...prev, ...perm])
@@ -176,12 +179,22 @@ export const Permissions = (props: PermissionProps) => {
     }
     const handleChangeGroupPermission = (event: SyntheticEvent, itemId: string, isSelected: boolean) => {
         if (isSelected) {
-            setSelectedGroupPermissions(prev => {
-                return new Set<string>([...prev, itemId])
-            })
-
+            if (itemId === TEM_PERMISSION_ID) {
+                setSelectedGroupPermissions(new Set([
+                    ...(Object.values(getPermissionsTree(localPermission)) || []).map(prm => prm.id),
+                    TEM_PERMISSION_ID,
+                ]));
+            } else {
+                setSelectedGroupPermissions(prev => {
+                    return new Set<string>([...prev, itemId])
+                })
+            }
         } else {
-            setSelectedGroupPermissions(prev => new Set([...prev].filter(permit => permit != itemId)))
+            if (itemId === TEM_PERMISSION_ID) {
+                setSelectedGroupPermissions(new Set([]))
+            } else {
+                setSelectedGroupPermissions(prev => new Set([...prev].filter(permit => permit != itemId)))
+            }
         }
     }
     const handleExpandedItemsChange = (event: React.SyntheticEvent, itemIds: string[],) => {
@@ -251,167 +264,194 @@ export const Permissions = (props: PermissionProps) => {
         setToastOpen(false);
     };
 
+    const handleRemoveAll = () => {
+        setSelectedPermissions(new Set([]))
+        dispatch(setPermissionTreeData({}))
+    }
+
     const SaveComp = () => {
         return (
             <div className={"mb-5 self-end"}>
-                <Button color='success' onClick={handleSavePermission} variant="contained">Save</Button>
+                <Button color='success' onClick={handleSavePermission} size='large'
+                        variant="contained">Save Permissions</Button>
             </div>
         )
     }
 
     return (
-        <div>
-            <Typography variant="h3" gutterBottom>
-                Permissions
+        <Paper sx={{px: '1rem', my: '1rem'}} elevation={0} variant="outlined">
+            <Typography variant="h5" gutterBottom sx={{my: '1rem'}}>
+                Assign User Permissions
             </Typography>
             <div className={"flex flex-col"}>
-                <Box>
+                <Paper sx={{p: '1rem'}} elevation={0} variant="outlined">
                     <SimpleTreeView
                         selectedItems={[...selectedGroupPermissions]}
                         onItemSelectionToggle={handleChangeGroupPermission}
                         multiSelect
+                        defaultExpandedItems={[TEM_PERMISSION_ID]}
                         checkboxSelection>
-                        {Object.values(getPermissionsTree(localPermission))?.map(permission => (
-                            <TreeItem2
-                                key={permission.id}
-                                label={permission.label}
-                                itemId={permission.id}>
-                            </TreeItem2>
-                        ))}
+                        <TreeItem2
+                            itemId={TEM_PERMISSION_ID}
+                            label='Permissions'>
+                            {Object.values(getPermissionsTree(localPermission))?.map(permission => (
+                                <TreeItem2
+                                    key={permission.id}
+                                    label={permission.label}
+                                    itemId={permission.id}>
+                                </TreeItem2>
+                            ))}
+                        </TreeItem2>
                     </SimpleTreeView>
-                </Box>
+
+                    <Paper sx={{p: '.5rem', mt: '1rem'}} elevation={1}>
+                        <Box display="flex"
+                             alignItems="center"
+                             className={'my-5'}
+                             gap={2}>
+                            <Box display="flex" flexDirection='column' gap={1} width='100%'>
+                                <FormControl fullWidth size='small'>
+                                    <InputLabel id="group-list-label">Group List</InputLabel>
+                                    <Select
+                                        labelId="group-list-label"
+                                        label="Group List"
+                                        value={selectedGroup}
+                                        onChange={handleChangeGroup}>
+                                        {groupList?.map((group) => (
+                                            (group.id !== -1 && !Object.keys(permissionTreeData).includes(group.name)) &&
+                                            <MenuItem key={group.id}
+                                                      value={group.name}>{group.name}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+
+                                <Box display="flex" width='100%' justifyContent="space-between">
+                                    <Button variant='contained'
+                                            onClick={handleAddGroup}
+                                            startIcon={<GroupAddIcon/>}
+                                            sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>
+                                        Assign Group
+                                    </Button>
+                                    <Button variant='contained'
+                                            onClick={handleRemoveGroup}
+                                            startIcon={<GroupRemoveIcon/>}
+                                            sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>
+                                        Remove Group
+                                    </Button>
+                                </Box>
 
 
-                <Box display="flex"
-                     alignItems="center"
-                     className={'my-5'}
-                     gap={2}>
-                    <Box display="flex" flexDirection='column' gap={1} width='100%'>
-                        <FormControl fullWidth size='small'>
-                            <InputLabel id="group-list-label">Group List</InputLabel>
-                            <Select
-                                labelId="group-list-label"
-                                label="Group List"
-                                value={selectedGroup}
-                                onChange={handleChangeGroup}>
-                                {groupList?.map((group) => (
-                                    (group.id !== -1 && !Object.keys(permissionTreeData).includes(group.name)) &&
-                                    <MenuItem key={group.id}
-                                              value={group.name}>{group.name}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                            </Box>
+                            <Box display="flex" flexDirection='column' gap={1} width='100%'>
 
-                        <Box display="flex" width='100%' justifyContent="space-between">
-                            <Button variant='contained'
-                                    onClick={handleAddGroup}
-                                    startIcon={<GroupAddIcon/>}
-                                    sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>
-                                Add Group
-                            </Button>
-                            <Button variant='contained'
-                                    onClick={handleRemoveGroup}
-                                    startIcon={<GroupRemoveIcon/>}
-                                    sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>
-                                Remove Group
-                            </Button>
-                        </Box>
-
-
-                    </Box>
-                    <Box display="flex" flexDirection='column' gap={1} width='100%'>
-
-                        <Autocomplete
-                            clearOnEscape
-                            options={userList || []}
-                            getOptionLabel={(option) => option.username}
-                            loading={false}
-                            value={userList?.find(user => user.username === selectedUser) || null}
-                            getOptionDisabled={user => !(user.id !== -1 && !Object.keys(permissionTreeData).includes(user.username))}
-                            onChange={handleChangeUser}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="User List"
-                                    variant="outlined"
-                                    size="small"
-                                    fullWidth
+                                <Autocomplete
+                                    clearOnEscape
+                                    options={userList || []}
+                                    getOptionLabel={(option) => option.username}
+                                    loading={false}
+                                    value={userList?.find(user => user.username === selectedUser) || null}
+                                    getOptionDisabled={user => !(user.id !== -1 && !Object.keys(permissionTreeData).includes(user.username))}
+                                    onChange={handleChangeUser}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="User List"
+                                            variant="outlined"
+                                            size="small"
+                                            fullWidth
+                                        />
+                                    )}
+                                    isOptionEqualToValue={(option, value) => option.username === value.username}
                                 />
-                            )}
-                            isOptionEqualToValue={(option, value) => option.username === value.username}
-                        />
 
-                        <Box display="flex" width='100%' justifyContent="space-between">
-                            <Button variant='contained'
-                                    onClick={handleAddUser}
-                                    startIcon={<PersonAddIcon/>}
-                                    sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>
-                                Add User
-                            </Button>
-                            {/*<Button variant='contained'*/}
-                            {/*        onClick={handleRemoveUser}*/}
-                            {/*        startIcon={<PersonRemoveIcon/>}*/}
-                            {/*        sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>*/}
-                            {/*    Remove User*/}
-                            {/*</Button>*/}
+                                <Box display="flex" width='100%' justifyContent="space-between">
+                                    <Button variant='contained'
+                                            onClick={handleAddUser}
+                                            startIcon={<PersonAddIcon/>}
+                                            sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>
+                                        Assign User
+                                    </Button>
+                                    {/*<Button variant='contained'*/}
+                                    {/*        onClick={handleRemoveUser}*/}
+                                    {/*        startIcon={<PersonRemoveIcon/>}*/}
+                                    {/*        sx={{'minWidth': '10rem', 'maxWidth': '15rem'}}>*/}
+                                    {/*    Remove User*/}
+                                    {/*</Button>*/}
+                                </Box>
+                            </Box>
                         </Box>
-                    </Box>
-                </Box>
+                    </Paper>
+                </Paper>
+                <Paper sx={{px: '1rem', my: '1rem'}} elevation={0} variant="outlined">
+                    {Object.keys(permissionTreeData).length > 1 ?
+                        <>
+                            <Box display='flex' justifyContent='space-between' py={1}>
+                                <ButtonGroup color='info' variant="outlined" size="small">
+                                    <Button onClick={handleSelectAll}>Select All</Button>
+                                    <Button onClick={handleUnselectAll}>Unselect All</Button>
+                                    <Button onClick={handleExpandAll}>Expand All</Button>
+                                    <Button onClick={handleCollapseAll}>Collapse All</Button>
+                                    <Button onClick={handleRemoveAll}>Remove All</Button>
+                                </ButtonGroup>
+
+                                <Autocomplete
+                                    options={getAllUsers()}
+                                    onChange={handleSearch}
+                                    size="small"
+                                    sx={{minWidth: '10rem'}}
+                                    renderInput={(params) => <TextField {...params} label="Search"/>}
+                                />
+
+                            </Box>
+
+                            <Paper sx={{px: '1rem', py: '.5rem', my: '.25rem'}} elevation={0} variant="outlined">
+                                <SaveComp/>
+                                <SimpleTreeView
+                                    apiRef={treeRef}
+                                    expandedItems={[...expandedItems]}
+                                    defaultExpandedItems={[]}
+                                    selectedItems={selectedPermit}
+                                    onItemSelectionToggle={handleChangePermission}
+                                    onExpandedItemsChange={handleExpandedItemsChange}
+                                    checkboxSelection
+                                    multiSelect>
+                                    {Object.keys(permissionTreeData)?.map(user => (
+                                        user !== owner &&
+                                        <UserItem
+                                            key={user}
+                                            onDelete={handleDelete}
+                                            label={user === owner ? (user + ' (Owner)') : user}
+                                            itemId={user}
+                                            disabled={user === owner}>
+                                            <Permission userPermission={permissionTreeData[user]} formOwner={owner}
+                                                        user={user}/>
+                                        </UserItem>
 
 
-                <Box>
-                    <Box display='flex' justifyContent='space-between' py={2}>
-                        <ButtonGroup color='info' variant="outlined" size="small">
-                            <Button onClick={handleSelectAll}>Select All</Button>
-                            <Button onClick={handleUnselectAll}>Unselect All</Button>
-                            <Button onClick={handleExpandAll}>Expand All</Button>
-                            <Button onClick={handleCollapseAll}>Collapse All</Button>
-                        </ButtonGroup>
-
-                        <Autocomplete
-                            options={getAllUsers()}
-                            onChange={handleSearch}
-                            size="small"
-                            sx={{minWidth: '10rem'}}
-                            renderInput={(params) => <TextField {...params} label="Search"/>}
-                        />
-
-                    </Box>
-
-                    <SaveComp/>
-                    <SimpleTreeView
-                        apiRef={treeRef}
-                        expandedItems={[...expandedItems]}
-                        defaultExpandedItems={[]}
-                        selectedItems={selectedPermit}
-                        onItemSelectionToggle={handleChangePermission}
-                        onExpandedItemsChange={handleExpandedItemsChange}
-                        checkboxSelection
-                        multiSelect>
-                        {Object.keys(permissionTreeData)?.map(user => (
-                            user !== owner &&
-                            <UserItem
-                                key={user}
-                                onDelete={handleDelete}
-                                label={user === owner ? (user + ' (Owner)') : user}
-                                itemId={user}
-                                disabled={user === owner}>
-                                <Permission userPermission={permissionTreeData[user]} formOwner={owner} user={user}/>
-                            </UserItem>
-
-
-                        ))}
-                    </SimpleTreeView>
-                    <SaveComp/>
-                </Box>
+                                    ))}
+                                </SimpleTreeView>
+                                <SaveComp/>
+                            </Paper>
+                        </> :
+                        <Typography variant='body1' sx={{p: '1rem'}}>
+                            {
+                                props.formId ?
+                                    <span>No permissions assign</span> :
+                                    <span>No form selected</span>
+                            }
+                        </Typography>
+                    }
+                </Paper>
 
             </div>
+
+
             <Snackbar
                 open={toastOpen}
                 autoHideDuration={5000}
                 onClose={handleToastClose}
                 message={toastMessage}
             />
-        </div>
+        </Paper>
     )
 }

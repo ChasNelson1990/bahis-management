@@ -9,7 +9,7 @@ import {
     UserPermissionTreeType,
     UserPermissionType
 } from "../features/permissions/Permission.model.ts";
-import {PARTIAL_PERMIT, PARTIAL_SUBMIT} from "../features/permissions/permissionSlice.ts";
+import {ADD_SUBMISSION, PARTIAL_PERMIT, PARTIAL_SUBMIT} from "../features/permissions/permissionSlice.ts";
 import {FormType} from "../features/forms/form.model.ts";
 
 
@@ -44,6 +44,12 @@ function getUserPermission(
         {filters: [{_submitted_by: userName}]} : undefined),
     partial_permissions?: PartialPermissionType[],
     isOwner: boolean = false,): UserPermissionType {
+
+    if (permissionName === ADD_SUBMISSION) {
+        filters = undefined;
+        partial_permissions = undefined;
+        type = undefined;
+    }
 
     return {
         id: userName ? userName.concat('.', permissionName) : permissionName,
@@ -173,12 +179,12 @@ export function convertTreeToPermissions(treeData: UserPermissionTreeType, selec
                     partialPermit.push({
                         url: makeUrl(permission, 'permissions/', '/'),
                         filters: permitObj.filters
-                    })
+                    });
                 } else {
                     bulkPermission.push({
                         user: makeUrl(user, 'users/', '/'),
                         permission: makeUrl(permission, 'permissions/', '/')
-                    })
+                    });
                 }
             }
         })
