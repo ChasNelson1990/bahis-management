@@ -7,25 +7,33 @@ from .base import env
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["bahis.dls.gov.bd"])
+CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS")
 
 # DATABASES
 # ------------------------------------------------------------------------------
 DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa: F405
 
-# CACHES
-# ------------------------------------------------------------------------------
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": env("REDIS_URL"),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            # Mimicing memcache behavior.
-            # https://github.com/jazzband/django-redis#memcached-exceptions-behavior
-            "IGNORE_EXCEPTIONS": True,
-        },
-    }
+SESSION_ENGINE = 'redis_sessions.session'
+redis_session_url = env.cache_url(
+    'REDIS_SESSION_URL', default='redis://redis_cache:6380/2'
+)
+SESSION_REDIS = {
+    'url': redis_session_url['LOCATION'],
+    'prefix': env.str('REDIS_SESSION_PREFIX', 'session'),
+    'socket_timeout': env.int('REDIS_SESSION_SOCKET_TIMEOUT', 1),
 }
+
+CACHES = {
+    # Set CACHE_URL to override
+    'default': env.cache_url(default='redis://redis_cache:6380/3'),
+    'enketo_redis_main': env.cache_url(
+        'ENKETO_REDIS_MAIN_URL', default='redis://change-me.invalid/0'
+    ),
+}
+
+SESSION_COOKIE_NAME = env('DJANGO_SESSION_COOKIE_NAME')
+SESSION_COOKIE_DOMAIN = env('DJANGO_SESSION_COOKIE_DOMAIN')
+
 
 # SECURITY
 # ------------------------------------------------------------------------------
