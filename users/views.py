@@ -7,7 +7,7 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 
-from users.models import Profile
+from users.models import Profile, DeskVersion
 from users.serializers import UserSerializer
 
 
@@ -48,6 +48,13 @@ class APIAuth(ObtainAuthToken):
 
         upz = Profile.objects.filter(user=user).first()
         if upz:
+            initial_data = serializer.initial_data
+            print(initial_data)
+            if "bahis_desk_version" in initial_data:
+                bahis_no = initial_data["bahis_desk_version"]
+                DeskVersion.objects.create(user=user, desk_version=bahis_no)
+            else:
+                DeskVersion.objects.create(user=user, desk_version="None")
             return Response({"user": UserSerializer(user).data, "token": token, "upazila": upz.upazila_code})
         else:
             # "Only upazilas can use BAHIS-desk"
