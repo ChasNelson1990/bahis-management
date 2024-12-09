@@ -13,8 +13,8 @@ from django.views.generic.list import ListView
 from django_filters.views import FilterView
 from rest_framework.authtoken.models import Token
 
-from bahis_management.desk.models import Module, Workflow
-from bahis_management.desk.utils import get_modules_for_user
+from nexus.desk.models import Module, Workflow
+from nexus.desk.utils import get_modules_for_user
 from config.settings.base import env
 
 desk_module_entry_fields = [

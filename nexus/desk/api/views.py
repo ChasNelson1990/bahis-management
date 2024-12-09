@@ -1,8 +1,8 @@
 from rest_framework import permissions, viewsets
 
-from bahis_management.desk.api.serializers import ModuleSerializer, ModuleTypeSerializer, WorkflowSerializer
-from bahis_management.desk.models import ModuleType, Workflow
-from bahis_management.desk.utils import get_modules_for_user
+from nexus.desk.api.serializers import ModuleSerializer, ModuleTypeSerializer, WorkflowSerializer
+from nexus.desk.models import ModuleType, Workflow
+from nexus.desk.utils import get_modules_for_user
 
 
 class ModuleTypeViewSet(viewsets.ModelViewSet):

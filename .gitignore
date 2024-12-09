@@ -271,7 +271,7 @@ tags
 dump.rdb
 
 ### Project template
-bahis_management/media/
+nexus/media/
 
 .pytest_cache/
 .ipython/

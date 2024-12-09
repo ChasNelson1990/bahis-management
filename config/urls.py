@@ -7,7 +7,7 @@ from django.views import defaults as default_views
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
 
-from bahis_management.portal import views
+from nexus.portal import views
 
 urlpatterns = [
     path("", views.home, name="home"),
@@ -39,9 +39,9 @@ urlpatterns += [
         name="api-docs",
     ),
     # Desk Modules urls
-    path("desk/", include("bahis_management.desk.urls")),
+    path("desk/", include("nexus.desk.urls")),
     # Taxonomies urls
-    path("taxonomy/", include("bahis_management.taxonomies.urls")),
+    path("taxonomy/", include("nexus.taxonomies.urls")),
     path("o/", include("oauth2_provider.urls", namespace="oauth2_provider")),
 ]
 

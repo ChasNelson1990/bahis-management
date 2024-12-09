@@ -1,11 +1,11 @@
 from rest_framework import parsers, permissions, response, status, views, viewsets
 
-from bahis_management.taxonomies.api.serializers import (
+from nexus.taxonomies.api.serializers import (
     AdministrativeRegionLevelSerializer,
     AdministrativeRegionSerializer,
     TaxonomySerializer,
 )
-from bahis_management.taxonomies.models import AdministrativeRegion, AdministrativeRegionLevel, Taxonomy
+from nexus.taxonomies.models import AdministrativeRegion, AdministrativeRegionLevel, Taxonomy
 
 
 class TaxonomyViewSet(viewsets.ModelViewSet):

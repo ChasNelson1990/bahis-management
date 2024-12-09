@@ -1,6 +1,6 @@
 from django.urls import path
 
-from bahis_management.desk import views
+from nexus.desk import views
 
 app_name = "desk"
 urlpatterns = [

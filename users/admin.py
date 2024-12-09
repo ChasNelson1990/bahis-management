@@ -5,7 +5,7 @@ from django.contrib.auth.models import User, Group
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
-from bahis_management.desk.models import Module
+from nexus.desk.models import Module
 from users.models import Profile, DeskVersion
 
 

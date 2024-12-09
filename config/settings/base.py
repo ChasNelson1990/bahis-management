@@ -7,8 +7,8 @@ from pathlib import Path
 import environ
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
-# bahis_management/
-APPS_DIR = BASE_DIR / "bahis_management"
+# nexus/
+APPS_DIR = BASE_DIR / "nexus"
 env = environ.Env()
 
 READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
@@ -96,8 +96,8 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "users",
     "frontend",
-    "bahis_management.desk",
-    "bahis_management.taxonomies",
+    "nexus.desk",
+    "nexus.taxonomies",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

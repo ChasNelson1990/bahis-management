@@ -7,7 +7,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from django_filters.views import FilterView
 
-from bahis_management.taxonomies.models import AdministrativeRegion, AdministrativeRegionLevel, Taxonomy
+from nexus.taxonomies.models import AdministrativeRegion, AdministrativeRegionLevel, Taxonomy
 
 
 @login_required

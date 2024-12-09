@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from bahis_management.taxonomies.models import AdministrativeRegion, AdministrativeRegionLevel, Taxonomy
+from nexus.taxonomies.models import AdministrativeRegion, AdministrativeRegionLevel, Taxonomy
 
 
 class TaxonomySerializer(serializers.ModelSerializer):

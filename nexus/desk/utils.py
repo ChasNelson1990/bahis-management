@@ -1,7 +1,7 @@
 import requests
 from rest_framework.authtoken.models import Token
 
-from bahis_management.desk.models import Module
+from nexus.desk.models import Module
 from config.settings.base import env
 
 

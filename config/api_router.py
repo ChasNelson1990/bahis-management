@@ -2,8 +2,8 @@ from django.conf import settings
 from django.urls import path
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
-from bahis_management.desk.api.views import ModuleTypeViewSet, ModuleViewSet, WorkflowViewSet
-from bahis_management.taxonomies.api.views import (
+from nexus.desk.api.views import ModuleTypeViewSet, ModuleViewSet, WorkflowViewSet
+from nexus.taxonomies.api.views import (
     AdministrativeRegionCatchmentView,
     AdministrativeRegionLevelViewSet,
     AdministrativeRegionViewSet,
