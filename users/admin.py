@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from bahis_management.desk.models import Module
-from users.models import Profile
+from users.models import Profile, DeskVersion
 
 
 class GroupForm(forms.ModelForm):
@@ -99,6 +99,27 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = ['upazila_code', 'upazila_name', 'user', 'user_id']
     search_fields = ['upazila_code', 'upazila_name', 'user__id', 'user__username', ]
     ordering = ['upazila_code']
+
+
+@admin.register(DeskVersion)
+class DeskVersionAdmin(admin.ModelAdmin):
+    list_display = ('user', 'desk_version', 'last_login')
+    search_fields = ('user__username', 'desk_version')
+    list_filter = ('last_login', 'desk_version')
+    fields = ('user', 'desk_version', 'last_login')
+    ordering = ('-last_login',)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def get_readonly_fields(self, request, obj=None):
+        return ['user', 'desk_version', 'last_login']
 
 
 admin.site.unregister(User)
