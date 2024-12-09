@@ -21,7 +21,7 @@ start = time.time()
 while True:
     try:
         psycopg.connect(
-            dbname="${KOBO_DB}",
+            dbname="${KPI_DB}",
             user="${KOBO_USER}",
             password="${KOBO_PASSWORD}",
             host="${KOBO_HOST}",

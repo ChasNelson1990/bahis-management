@@ -1,4 +1,3 @@
-
 FROM node:22-bookworm AS react
 ARG APP_HOME=/app
 RUN mkdir -p ${APP_HOME}
@@ -51,7 +50,7 @@ COPY --from=react ${APP_HOME} ${APP_HOME}
 ENV DJANGO_READ_DOT_ENV_FILE=true
 
 RUN DATABASE_URL="" \
-  DJANGO_SETTINGS_MODULE="config.settings.dev" \
+  DJANGO_SETTINGS_MODULE="config.settings.test" \
   python manage.py compilemessages
 
 CMD python manage.py collectstatic --noinput
