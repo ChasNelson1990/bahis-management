@@ -1,6 +1,7 @@
 from django.contrib.auth.views import LoginView
 from django.http import Http404
 from django.urls import reverse_lazy
+from django.utils.timezone import now
 from requests.auth import HTTPBasicAuth
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.serializers import AuthTokenSerializer
@@ -49,12 +50,18 @@ class APIAuth(ObtainAuthToken):
         upz = Profile.objects.filter(user=user).first()
         if upz:
             initial_data = serializer.initial_data
-            print(initial_data)
             if "bahis_desk_version" in initial_data:
                 bahis_no = initial_data["bahis_desk_version"]
-                DeskVersion.objects.create(user=user, desk_version=bahis_no)
             else:
-                DeskVersion.objects.create(user=user, desk_version="None")
+                bahis_no = None
+
+            DeskVersion.objects.update_or_create(
+                user=user,
+                defaults={
+                    'desk_version': bahis_no,
+                    'last_login': now()
+                }
+            )
             return Response({"user": UserSerializer(user).data, "token": token, "upazila": upz.upazila_code})
         else:
             # "Only upazilas can use BAHIS-desk"
