@@ -4,7 +4,7 @@ RUN mkdir -p ${APP_HOME}
 WORKDIR ${APP_HOME}
 COPY . ${APP_HOME}
 RUN npm install
-RUN npm run build:dev
+RUN npm run build
 
 FROM python:3.11.7-slim-bookworm
 
