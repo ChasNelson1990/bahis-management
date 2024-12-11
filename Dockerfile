@@ -8,8 +8,8 @@ RUN npm run build
 
 FROM python:3.11.7-slim-bookworm
 
-ARG BUILD_ENVIRONMENT=dev
-# ARG BUILD_ENVIRONMENT=production
+#ARG BUILD_ENVIRONMENT=dev
+ARG BUILD_ENVIRONMENT=production
 ARG APP_HOME=/app
 WORKDIR ${APP_HOME}
 

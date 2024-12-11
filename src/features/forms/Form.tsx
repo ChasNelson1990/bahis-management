@@ -30,7 +30,7 @@ function Form() {
     }
 
     return (
-        <div className='mx-auto sm:mx-auto md:mx-auto lg:mx-36 xl:mx-60 2xl:mx-96 mt-2'>
+        <div className='mx-2 sm:mx-2.5 md:mx-3 lg:mx-36 xl:mx-60 2xl:mx-96 mt-2'>
             <div className='my-3 text-xl'>Select Form</div>
             <FormControl fullWidth>
                 <InputLabel id="form-list-label">Form List</InputLabel>
