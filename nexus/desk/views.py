@@ -13,9 +13,10 @@ from django.views.generic.list import ListView
 from django_filters.views import FilterView
 from rest_framework.authtoken.models import Token
 
+from config.settings.base import env
 from nexus.desk.models import Module, Workflow
 from nexus.desk.utils import get_modules_for_user
-from config.settings.base import env
+from nexus.permissions.permissions import IsSuperUser
 
 desk_module_entry_fields = [
     "title",
@@ -110,7 +111,8 @@ class MaterialUIIconPicker(TextInput):
         return mark_safe(html)
 
 
-class ModuleList(LoginRequiredMixin, FilterView):
+class ModuleList(LoginRequiredMixin, FilterView, ):
+    permission_classes = [IsSuperUser]
     template_name_suffix = "_list"
     model = Module
     paginate_by = 5
@@ -126,7 +128,7 @@ class ModuleList(LoginRequiredMixin, FilterView):
         ids = []
         if modules:
             ids = [i.id for i in modules]
-        return Module.objects.filter(id__in=ids)
+        return Module.objects.filter(id__in=ids) | Module.objects.filter(module_type=3)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
